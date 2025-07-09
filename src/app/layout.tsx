@@ -27,7 +27,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        {/* <section className="w-full h-screen  overflow-hidden  bg-[radial-gradient(circle,_#FFC8DD,_#ffffff)]"> */}
+
+          {children}
+        {/* </section> */}
       </body>
     </html>
   );
