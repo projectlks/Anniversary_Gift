@@ -123,13 +123,13 @@ if (/^\d$/.test(key) && number.length < 6) {
     <button
       onClick={() => handleButtonClick(value)}
       className="bg-gradient-to-br from-pink-100 via-rose-50 to-purple-100
-        border border-pink-200/50 rounded-3xl shadow-lg
+        border border-pink-200/50 rounded md:rounded-3xl shadow-lg
         hover:from-pink-200 hover:via-rose-100 hover:to-purple-200
         hover:shadow-xl hover:scale-105 hover:border-pink-300/60
         active:scale-95 active:shadow-md
         transition-all duration-300 ease-out
         flex items-center justify-center mx-auto
-        text-rose-700 font-semibold text-2xl
+        text-rose-700 font-semibold text-xl md:text-2xl
         w-full aspect-[2/1]
         backdrop-blur-sm
         hover:text-rose-800
@@ -160,7 +160,7 @@ if (/^\d$/.test(key) && number.length < 6) {
 
   return (
     <div className="w-full mx-auto relative">
-      <div className="bg-gradient-to-br from-pink-50 via-white to-purple-50 backdrop-blur-lg border border-pink-200/30 rounded-3xl  p-8 relative overflow-hidden">
+      <div className="bg-gradient-to-br from-pink-50 via-white to-purple-50 backdrop-blur-lg border border-pink-200/30 rounded-3xl p-4 md:p-8 relative overflow-hidden">
         {/* Decorative Bubbles */}
         <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
           <div className="absolute top-4 right-4 w-8 h-8 bg-pink-300 rounded-full blur-sm" />

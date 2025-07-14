@@ -40,3 +40,16 @@
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;     /* Firefox */
 }
+@keyframes pulse-heart {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.3);
+  }
+}
+.pulse-heart {
+  animation: pulse-heart 1.5s ease-in-out infinite;
+}
+
+

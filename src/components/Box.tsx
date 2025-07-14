@@ -27,10 +27,12 @@ export function Box({
       className="w-full aspect-[2/1] flex flex-col justify-center space-y-5 items-center rounded-xl p-5 shadow-md"
       style={{ backgroundColor: bgColor, boxShadow: `0 4px 6px ${circleColor}40` }}
     >
-      <span className="block w-[100px] aspect-square rounded-full" style={{ backgroundColor: circleColor }}>
+      <span
+        className=" w-[100px] aspect-square rounded-full shadow-lg ring-1 ring-white/30 bg-opacity-80 backdrop-blur-md flex items-center justify-center transition"
+        // style={{ backgroundColor: circleColor }}
+      >
         {icon1}
       </span>
-
       <h1 className="text-3xl font-bold tracking-wide" style={{ color: textColor }}>
         {title}
       </h1>

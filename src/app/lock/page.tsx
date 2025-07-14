@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import img1 from "../../imgs/download.png"
+import c from "../../imgs/sticker.png"
 import Keyboard from '@/components/Keyboard'
 import { useState } from 'react';
 
@@ -15,13 +16,20 @@ export default function Lock() {
 
   return (
     <section className="w-full h-screen flex overflow-hidden justify-center items-center bg-[radial-gradient(circle,_#FFC8DD,_#ffffff)]">
-      <div className='w-[90%] max-w-7xl rounded-tl-[50px] rounded-br-[50px] bg-white pr-0 p-3 flex h-[95%] '>
+      <div className='w-[90%] max-w-7xl rounded-tl-[50px] rounded-br-[50px] bg-white pr-0  md:p-3 flex h-[95%] '>
         {/* left */}
-        <div className='h-full   rounded-tl-[38px] rounded-br-[38px] bg-[#FFC8DD] w-1/2 overflow-hidden flex justify-center items-end '>
+        <div className='h-full hidden relative  rounded-tl-[38px] rounded-br-[38px] bg-[#FFC8DD] w-1/2 overflow-hidden md:flex justify-center items-end '>
           <Image
             src={img1}
             alt="Lock Image"
             className="  w-[75%] "
+            style={{ filter: 'drop-shadow(0 8px 12px #a2d2ff)' }}
+          />
+
+          <Image
+            src={c}
+            alt="Lock Image"
+            className="  w-[25%] absolute bottom-0 right-0"
             style={{ filter: 'drop-shadow(0 8px 12px #a2d2ff)' }}
           />
         </div>
@@ -29,7 +37,7 @@ export default function Lock() {
 
         {/* right */}
 
-        <div className='flex-1  p-10 flex justify-end items-center  flex-col space-y-5  h-full'>
+        <div className='flex-1 p-5  md:p-10 flex justify-end items-center  flex-col space-y-5  h-full'>
 
 
           <svg
