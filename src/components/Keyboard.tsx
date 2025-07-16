@@ -22,7 +22,7 @@ export default function RomanticNumberKeyboard({
           router.push("/menus");
         }, 1000); // Redirect after 1 second
       } else {
-      
+
         setIsSuccess(false);
         setTimeout(() => {
           setNumber([]);
@@ -32,22 +32,22 @@ export default function RomanticNumberKeyboard({
   }, [number, router, setNumber]);
 
   useEffect(() => {
-  const handleKeyDown = (e: KeyboardEvent) => {
-    const key = e.key;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const key = e.key;
 
-if (/^\d$/.test(key) && number.length < 6) {
-      setNumber((prev) => [...prev, key]);
-    } else if (key === "Backspace") {
-      setNumber((prev) => prev.slice(0, -1));
-    } else if (key === "Enter") {
-      // Optional: handle enter logic here
-      console.log("Enter pressed from keyboard");
-    }
-  };
+      if (/^\d$/.test(key) && number.length < 6) {
+        setNumber((prev) => [...prev, key]);
+      } else if (key === "Backspace") {
+        setNumber((prev) => prev.slice(0, -1));
+      } else if (key === "Enter") {
+        // Optional: handle enter logic here
+        console.log("Enter pressed from keyboard");
+      }
+    };
 
-  window.addEventListener("keydown", handleKeyDown);
-  return () => window.removeEventListener("keydown", handleKeyDown);
-}, [setNumber, number]);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [setNumber, number]);
 
 
   const handleButtonClick = (
@@ -69,51 +69,51 @@ if (/^\d$/.test(key) && number.length < 6) {
     | { type: "delete"; icon: JSX.Element }
     | { type: "enter"; icon: JSX.Element }
   )[][] = [
-    ["1", "2", "3"],
-    ["4", "5", "6"],
-    ["7", "8", "9"],
-    [
-      {
-        type: "delete",
-        icon: (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="size-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 9.75 14.25 12m0 0 2.25 2.25M14.25 12l2.25-2.25M14.25 12 12 14.25m-2.58 4.92-6.374-6.375a1.125 1.125 0 0 1 0-1.59L9.42 4.83c.21-.211.497-.33.795-.33H19.5a2.25 2.25 0 0 1 2.25 2.25v10.5a2.25 2.25 0 0 1-2.25 2.25h-9.284c-.298 0-.585-.119-.795-.33Z"
-            />
-          </svg>
-        ),
-      },
-      "0",
-      {
-        type: "enter",
-        icon: (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="size-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"
-            />
-          </svg>
-        ),
-      },
-    ],
-  ];
+      ["1", "2", "3"],
+      ["4", "5", "6"],
+      ["7", "8", "9"],
+      [
+        {
+          type: "delete",
+          icon: (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className=" size-4 md:size-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 9.75 14.25 12m0 0 2.25 2.25M14.25 12l2.25-2.25M14.25 12 12 14.25m-2.58 4.92-6.374-6.375a1.125 1.125 0 0 1 0-1.59L9.42 4.83c.21-.211.497-.33.795-.33H19.5a2.25 2.25 0 0 1 2.25 2.25v10.5a2.25 2.25 0 0 1-2.25 2.25h-9.284c-.298 0-.585-.119-.795-.33Z"
+              />
+            </svg>
+          ),
+        },
+        "0",
+        {
+          type: "enter",
+          icon: (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className=" size-4 md:size-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"
+              />
+            </svg>
+          ),
+        },
+      ],
+    ];
 
   const KeyButton = ({
     value,
@@ -123,13 +123,13 @@ if (/^\d$/.test(key) && number.length < 6) {
     <button
       onClick={() => handleButtonClick(value)}
       className="bg-gradient-to-br from-pink-100 via-rose-50 to-purple-100
-        border border-pink-200/50 rounded md:rounded-3xl shadow-lg
+        border border-pink-200/50 rounded-md md:rounded-3xl shadow-lg
         hover:from-pink-200 hover:via-rose-100 hover:to-purple-200
         hover:shadow-xl hover:scale-105 hover:border-pink-300/60
         active:scale-95 active:shadow-md
         transition-all duration-300 ease-out
         flex items-center justify-center mx-auto
-        text-rose-700 font-semibold text-xl md:text-2xl
+        text-rose-700 font-semibold text-md md:text-2xl
         w-full aspect-[2/1]
         backdrop-blur-sm
         hover:text-rose-800
@@ -146,7 +146,7 @@ if (/^\d$/.test(key) && number.length < 6) {
           viewBox="0 0 24 24"
           strokeWidth={0.5}
           stroke="currentColor"
-          className="size-16"
+          className= "size-10 md:size-16"
         >
           <path
             strokeLinecap="round"

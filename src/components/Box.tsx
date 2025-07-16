@@ -1,56 +1,135 @@
-import { useRouter } from "next/navigation";
-import React from "react";
+"use client"
+
+import { useRouter } from "next/navigation"
+import type React from "react"
 
 type BoxProps = {
-  title?: string;
-  description?: string;
-  icon1?: React.ReactNode;
-  bgColor?: string;
-  circleColor?: string;
-  textColor?: string;
-  goTo: string;
-};
+  title?: string
+  description?: string
+  icon1?: React.ReactNode
+  bgColor?: string
+  circleColor?: string
+  textColor?: string
+  goTo: string
+}
 
 export function Box({
   title = "Our Memories",
   description = "Every precious moment we've shared together",
   icon1,
-  bgColor = "#fff0f6",
-  circleColor = "#ffc8dd",
-  textColor = "#ffafcc",
+  bgColor = "#CDB4DB",
+  circleColor = "#FFC8DD",
+  textColor = "#4A4A4A",
   goTo,
 }: BoxProps) {
-  const router = useRouter();
+  const router = useRouter()
+
   return (
     <div
-      onClick={() => { router.push(goTo); }}
-      className="w-full aspect-[2/1] flex flex-col justify-center space-y-5 items-center rounded-xl p-5 shadow-md"
-      style={{ backgroundColor: bgColor, boxShadow: `0 4px 6px ${circleColor}40` }}
+      onClick={() => router.push(goTo)}
+      className="group w-full aspect-[2/1] relative overflow-hidden cursor-pointer transform transition-all duration-700 hover:scale-110"
     >
-      <span
-        className=" w-[100px] aspect-square rounded-full shadow-lg ring-1 ring-white/30 bg-opacity-80 backdrop-blur-md flex items-center justify-center transition"
-        // style={{ backgroundColor: circleColor }}
+      {/* Unique card shape with cut corners */}
+      <div
+        className="absolute inset-0 transform rotate-1 group-hover:rotate-0 transition-transform duration-500"
+        style={{
+          background: `linear-gradient(45deg, ${bgColor}20 0%, ${bgColor}40 50%, ${bgColor}60 100%)`,
+          clipPath: "polygon(0 10%, 10% 0%, 90% 0%, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0% 90%)",
+        }}
+      ></div>
+
+      {/* Main card */}
+      <div
+        className="absolute inset-2 backdrop-blur-sm border-2 border-white/30 group-hover:border-white/60 transition-all duration-500 shadow-2xl"
+        style={{
+          background: `linear-gradient(135deg, ${bgColor}80, ${circleColor}60, ${bgColor}90)`,
+          clipPath: "polygon(0 8%, 8% 0%, 92% 0%, 100% 8%, 100% 92%, 92% 100%, 8% 100%, 0% 92%)",
+        }}
       >
-        {icon1}
-      </span>
-      <h1 className="text-3xl font-bold tracking-wide" style={{ color: textColor }}>
-        {title}
-      </h1>
+        {/* Decorative corner elements */}
+        <div className="absolute top-2 left-2 w-4 h-4 border-l-2 border-t-2 border-white/40"></div>
+        <div className="absolute top-2 right-2 w-4 h-4 border-r-2 border-t-2 border-white/40"></div>
+        <div className="absolute bottom-2 left-2 w-4 h-4 border-l-2 border-b-2 border-white/40"></div>
+        <div className="absolute bottom-2 right-2 w-4 h-4 border-r-2 border-b-2 border-white/40"></div>
 
-      <span className="flex space-x-2 items-center text-center text-sm text-gray-600">
-        {icon1}
-        <p>{description}</p>
-        {icon1 ? null : (
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="red" className="size-5">
-            <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
-          </svg>
-        )}
-        {icon1}
-      </span>
+        {/* Content */}
+        <div className="relative z-10 h-full flex flex-col justify-center items-center space-y-4 p-6">
+          {/* Hexagonal sticker container */}
+          <div className="relative">
+            <div
+              className="w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-500"
+              style={{
+                background: `linear-gradient(60deg, ${circleColor}, ${circleColor}80, ${circleColor})`,
+                clipPath: "polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)",
+                boxShadow: `0 8px 25px ${circleColor}60`,
+              }}
+            >
+              {/* Inner hexagon */}
+              <div
+                className="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center"
+                style={{
+                  background: `linear-gradient(120deg, ${circleColor}90, white, ${circleColor}70)`,
+                  clipPath: "polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)",
+                }}
+              >
+                {icon1}
+              </div>
+            </div>
+          </div>
 
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 text-rose-400">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
-      </svg>
+          {/* Title with unique styling */}
+          <div className="text-center space-y-2">
+            <h1
+              className="text-xl sm:text-2xl font-bold tracking-wider drop-shadow-lg font-sans transform group-hover:scale-105 transition-transform duration-300"
+              style={{
+                color: textColor,
+                textShadow: `2px 2px 4px ${bgColor}40`,
+              }}
+            >
+              {title}
+            </h1>
+
+            {/* Unique divider */}
+            <div className="flex items-center justify-center gap-1">
+              <div className="w-6 h-px bg-gradient-to-r from-transparent via-white/60 to-transparent"></div>
+              <div className="w-2 h-2 rounded-full bg-white/60 animate-pulse"></div>
+              <div className="w-6 h-px bg-gradient-to-r from-transparent via-white/60 to-transparent"></div>
+            </div>
+          </div>
+
+          {/* Description */}
+          <p
+            className="text-center text-xs sm:text-sm font-medium leading-relaxed max-w-xs opacity-90"
+            style={{ color: textColor }}
+          >
+            {description}
+          </p>
+
+          {/* Bottom accent */}
+          <div className="flex items-center gap-2 opacity-70">
+            <div className="w-1 h-1 rounded-full bg-white animate-pulse"></div>
+            <div className="w-2 h-2 rounded-full bg-white animate-pulse" style={{ animationDelay: "0.5s" }}></div>
+            <div className="w-1 h-1 rounded-full bg-white animate-pulse" style={{ animationDelay: "1s" }}></div>
+          </div>
+        </div>
+
+        {/* Animated background pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-4 left-4 w-2 h-2 bg-white rounded-full animate-twinkle"></div>
+          <div
+            className="absolute top-8 right-6 w-1 h-1 bg-white rounded-full animate-twinkle"
+            style={{ animationDelay: "1s" }}
+          ></div>
+          <div
+            className="absolute bottom-6 left-8 w-1.5 h-1.5 bg-white rounded-full animate-twinkle"
+            style={{ animationDelay: "2s" }}
+          ></div>
+          <div
+            className="absolute bottom-4 right-4 w-1 h-1 bg-white rounded-full animate-twinkle"
+            style={{ animationDelay: "3s" }}
+          ></div>
+        </div>
+      </div>
     </div>
-  );
+  )
 }

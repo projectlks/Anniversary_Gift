@@ -22,10 +22,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+
+  
+
+
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} scrollbar-hide antialiased`}
       >
         {/* <section className="w-full h-screen  overflow-hidden  bg-[radial-gradient(circle,_#FFC8DD,_#ffffff)]"> */}
 

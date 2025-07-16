@@ -19,7 +19,7 @@ export default function Page() {
   }, []);
 
   return (
-    <section className="relative w-full h-screen flex flex-col items-center justify-center bg-[radial-gradient(ellipse_at_center,_#FFE3EC,_#FFD6E8,_#ffffff)] px-4 text-center overflow-hidden">
+    <section className={`relative w-full h-screen flex flex-col items-center justify-center bg-[radial-gradient(ellipse_at_center,_#FFE3EC,_#FFD6E8,_#ffffff)] px-4 text-center overflow-hidden ${albertSans.className}`}>
 
       {/* Floating heart animation */}
       {/* heart animation  */}
