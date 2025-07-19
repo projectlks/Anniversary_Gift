@@ -1,35 +1,60 @@
-import { useRouter } from "next/navigation";
+
+// import { validateCode } from "@/libs/action";
+
+
+"use client";
+// import { useRouter } from "next/navigation";
 import type React from "react";
 import { JSX, useEffect } from "react";
 
 export default function RomanticNumberKeyboard({
   setNumber,
   number,
-  setIsSuccess
+  // setIsSuccess,
+  // checkCode
 }: {
   setNumber: React.Dispatch<React.SetStateAction<string[]>>;
   number: string[];
-  setIsSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+
 }) {
-  const router = useRouter();
+  // const router = useRouter();
+  // const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    if (number.length === 6) {
-      if (number.join("") === "187288") {
-        // router.push("/menus");
-        setIsSuccess(true);
-        setTimeout(() => {
-          router.push("/menus");
-        }, 1000); // Redirect after 1 second
-      } else {
+  // useEffect(() => {
+  //   // const checkCode = async () => {
+  //   //   if (number.length === 6) {
+  //   //     const code = number.join('');
+  //   //     // Call POST /api/unlock directly here
 
-        setIsSuccess(false);
-        setTimeout(() => {
-          setNumber([]);
-        }, 1000);
-      }
-    }
-  }, [number, router, setNumber]);
+  //   //     setIsLoading(true);
+  //   //     const res = await fetch('../app/api/unlock', {
+  //   //       method: 'POST',
+  //   //       headers: {
+  //   //         'Content-Type': 'application/json',
+  //   //       },
+  //   //       body: JSON.stringify({ passcode: code }),
+  //   //     });
+  //   //     const result = await res.json();
+
+  //   //     alert(result.success);
+  //   //     setIsLoading(false);
+
+  //   //     if (result.success) {
+  //   //       setIsSuccess(true);
+  //   //       setTimeout(() => {
+  //   //         router.push('/menus');
+  //   //       }, 1000);
+  //   //     } else {
+  //   //       setIsSuccess(false);
+  //   //       setTimeout(() => {
+  //   //         setNumber([]);
+  //   //       }, 1000);
+  //   //     }
+  //   //   }
+  //   // };
+
+  //   checkCode();
+  // }, [number, setIsSuccess, setNumber, router]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -146,7 +171,7 @@ export default function RomanticNumberKeyboard({
           viewBox="0 0 24 24"
           strokeWidth={0.5}
           stroke="currentColor"
-          className= "size-10 md:size-16"
+          className="size-10 md:size-16"
         >
           <path
             strokeLinecap="round"
@@ -158,7 +183,10 @@ export default function RomanticNumberKeyboard({
     </button>
   );
 
-  return (
+  return (<>
+    {/* {isLoading && (<div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-10 z-50">
+      <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-pink-500"></div>
+    </div>)} */}
     <div className="w-full mx-auto relative">
       <div className="bg-gradient-to-br from-pink-50 via-white to-purple-50 backdrop-blur-lg border border-pink-200/30 rounded-3xl p-4 md:p-8 relative overflow-hidden">
         {/* Decorative Bubbles */}
@@ -192,5 +220,7 @@ export default function RomanticNumberKeyboard({
         </div>
       </div>
     </div>
+
+  </>
   );
 }

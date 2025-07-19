@@ -6,7 +6,9 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
+  // output   = "../generated/prisma"
+    binaryTargets   = ["native", "rhel-openssl-3.0.x"]
+
 }
 
 datasource db {
@@ -21,3 +23,9 @@ model ClickCountTable {
   count     Int      @default(0)
 }
 
+model UploadedImage {
+  id         Int      @id @default(autoincrement())
+  imgUrl     String
+  uploadedAt DateTime @default(now())
+  isArchived Boolean  @default(false)
+}

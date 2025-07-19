@@ -1,10 +1,29 @@
 "use client";
 import { Box } from "@/components/Box";
+import { useRouter } from "next/navigation";
 
 export default function Menus() {
+
+  const router = useRouter();
+
+
+
+  const handleLogout = async () => {
+    await fetch('/api/lock', { method: 'POST' })
+    router.push('/lock') // redirect to lock page after locking
+  };
   return (
     <div className="flex flex-col space-y-5 items-center min-h-screen overflow-y-scroll scrollbar-hide pt-[100px] justify-start]">
       <h1 className="text-4xl font-bold text-[#a2d2ff] tracking-widest uppercase">Menu of Our Love</h1>
+
+
+      <div onClick={handleLogout} className="flex items-center justify-center gap-5 text-2xl text-red-500">
+
+        <p>
+          Logout
+        </p>
+
+      </div>
 
       <div className="flex items-center justify-center gap-5 text-2xl text-red-500">
         <HeartIcon1 />
@@ -14,45 +33,45 @@ export default function Menus() {
 
       <div className="w-[90%] max-w-7xl p-3 h-[95%]">
         <div className="gap-5  grid grid-cols-2 scrollbar-hide h-full">
-       <Box
-  title="Anniversary"
-  description="A love that grows every day."
-  icon1={<HeartIcon1 />}
-  bgColor="#fce4ec"
-  circleColor="#f8bbd0"
-  textColor="#ec407a"
-  goTo="memories"
-/>
+          <Box
+            title="Anniversary"
+            description="A love that grows every day."
+            icon1={<HeartIcon1 />}
+            bgColor="#fce4ec"
+            circleColor="#f8bbd0"
+            textColor="#ec407a"
+            goTo="memories"
+          />
 
-<Box
-  title="Journey"
-  description="A journey of love and memories."
-  icon1={<HeartIcon2 />}
-  bgColor="#ffcdd2"
-  circleColor="#f8bbd0"
-  textColor="#ec407a"
-  goTo="journey"
-/>
+          <Box
+            title="Journey"
+            description="A journey of love and memories."
+            icon1={<HeartIcon2 />}
+            bgColor="#ffcdd2"
+            circleColor="#f8bbd0"
+            textColor="#ec407a"
+            goTo="journey"
+          />
 
-<Box
-  title="Love Puzzle"
-  description="A puzzle of our love story."
-  icon1={<HeartIcon3 />}
-  bgColor="#e1bee7"
-  circleColor="#f8bbd0"
-  textColor="#ec407a"
-  goTo="journey"
-/>
+          <Box
+            title="Love Puzzle"
+            description="A puzzle of our love story."
+            icon1={<HeartIcon3 />}
+            bgColor="#e1bee7"
+            circleColor="#f8bbd0"
+            textColor="#ec407a"
+            goTo="journey"
+          />
 
-<Box
-  title="Love Notes"
-  description="A collection of our sweetest memories."
-  icon1={<HeartIcon4 />}
-  bgColor="#ffcdd2"
-  circleColor="#b2dfdb"
-  textColor="#ec407a"
-  goTo="journey"
-/>
+          <Box
+            title="Love Notes"
+            description="A collection of our sweetest memories."
+            icon1={<HeartIcon4 />}
+            bgColor="#ffcdd2"
+            circleColor="#b2dfdb"
+            textColor="#ec407a"
+            goTo="journey"
+          />
 
 
         </div>
@@ -75,7 +94,7 @@ function HeartIcon1() {
 function HeartIcon2() {
   return (
     <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#ffafcc" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg">
-      <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/>
+      <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z" />
     </svg>
   );
 }
