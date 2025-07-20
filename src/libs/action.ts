@@ -2,7 +2,10 @@
 "use server";
 
 
+// export const runtime = "nodejs"; // 👈 IMPORTANT LINE
+
 import { prisma } from "./prisma";
+
 
 export async function incrementLoveClick() {
 
@@ -22,6 +25,7 @@ export async function getTotalCounts() {
 }
 
 export async function getAllImages() {
+  // log("is it working")
   return await prisma.uploadedImage.findMany({
     where: {
       isArchived: false,
