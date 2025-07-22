@@ -12,6 +12,7 @@
   "dependencies": {
     "@lottiefiles/dotlottie-react": "^0.14.2",
     "@prisma/client": "^6.12.0",
+    "@shadcn/ui": "^0.0.4",
     "@vercel/blob": "^1.1.1",
     "framer-motion": "^12.23.0",
     "lottie-react": "^2.4.1",

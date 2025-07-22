@@ -74,7 +74,7 @@ export default function ImgUploadForm() {
         )
       }
 
-      <button onClick={()=>{SetOpenWebcam(true)}}>Open Carmea</button>
+      <button onClick={() => { SetOpenWebcam(true) }}>Open Carmea</button>
 
       {/* Dropzone with preview */}
       <div
@@ -124,7 +124,8 @@ export default function ImgUploadForm() {
         )}
       </div>
 
-      {/* Error message */}
+      {/* Error message */}23\\]
+
       {error && <p className="text-center text-red-500 font-medium">{error}</p>}
 
       {loading && <Loading />}
