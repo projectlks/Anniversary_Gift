@@ -22,12 +22,3 @@ model UploadedImage {
   isArchived Boolean  @default(false)
 }
 
-model User {
-  id         BigInt  @id
-  first_name String  @db.Char
-  last_name  String  @db.Char
-  email      String? @db.Char
-  phone      String? @db.Char
-  role       String? @db.Char
-  status     String? @db.Char
-}

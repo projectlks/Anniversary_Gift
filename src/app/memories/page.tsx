@@ -1,3 +1,5 @@
+// export const dynamic = "force-dynamic";
+
 import { DragCards } from "@/components/DragCards";
 import { getAllImages } from "@/libs/action";
 

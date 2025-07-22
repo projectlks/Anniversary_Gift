@@ -25,16 +25,23 @@ export async function getTotalCounts() {
 }
 
 export async function getAllImages() {
-  // log("is it working")
-  return await prisma.uploadedImage.findMany({
-    where: {
-      isArchived: false,
-    },
-    orderBy: {
-      uploadedAt: 'desc',
-    },
-  });
+  try {
+    const images = await prisma.uploadedImage.findMany({
+      where: {
+        isArchived: false,
+      },
+      orderBy: {
+        uploadedAt: 'desc',
+      },
+    });
+
+    return images ?? [];
+  } catch (error) {
+    console.error('Error fetching images:', error);
+    return [];
+  }
 }
+
 
 
 export async function validateCode(code: string) {

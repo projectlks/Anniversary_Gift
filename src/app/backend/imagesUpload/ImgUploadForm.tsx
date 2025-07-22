@@ -8,11 +8,14 @@ import { uploadImageFunction } from './action';
 import Image from 'next/image';
 import Loading from '@/components/Loading';
 
+import Webcam from 'react-webcam';
+
 export default function ImgUploadForm() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [openWebacam, SetOpenWebcam] = useState<boolean>(false)
 
   const router = useRouter();
 
@@ -63,6 +66,16 @@ export default function ImgUploadForm() {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-md mx-auto">
+
+      {
+        openWebacam && (
+
+          <Webcam />
+        )
+      }
+
+      <button onClick={()=>{SetOpenWebcam(true)}}>Open Carmea</button>
+
       {/* Dropzone with preview */}
       <div
         {...getRootProps()}

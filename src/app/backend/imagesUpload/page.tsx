@@ -1,4 +1,4 @@
-
+// export const dynamic = "force-dynamic";
 import { getAllImages } from '@/libs/action';
 import ImageUploadForm from './ImgUploadForm';
 import ShowAllImages from './ShowAllImages';
