@@ -22,3 +22,9 @@ model UploadedImage {
   isArchived Boolean  @default(false)
 }
 
+model PuzzleImages {
+  id         Int      @id @default(autoincrement())
+  imgUrl     String
+  uploadedAt DateTime @default(now())
+  isArchived Boolean  @default(false)
+}
