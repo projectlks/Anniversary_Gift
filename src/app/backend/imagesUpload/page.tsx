@@ -3,6 +3,7 @@ import { getAllImages } from '@/libs/action';
 import ImageUploadForm from './ImgUploadForm';
 import ShowAllImages from './ShowAllImages';
 import { Suspense } from "react";
+export const revalidate = 30;
 
 interface UploadedImage {
   id: number;

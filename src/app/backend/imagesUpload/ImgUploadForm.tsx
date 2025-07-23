@@ -31,15 +31,6 @@ export default function ImgUploadForm() {
   });
 
 
-
-
-
-  // 
-
-
-
-  // 
-
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setLoading(true);

@@ -4,6 +4,8 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { deleteImg } from "./action";
 import Loading from "@/components/Loading";
+export const revalidate = 60
+
 
 interface UploadedImage {
   id: number;
