@@ -2,7 +2,7 @@
 
 import { DragCards } from "@/components/DragCards";
 import { getAllImages } from "@/libs/action";
-
+export const revalidate = 60
 interface ImageType {
   imgUrl: string;
 }
