@@ -14,7 +14,7 @@ interface Props {
 export default function PuzzleForm({ totalPieces, gridSize, PuzzleImgs }: Props) {
     const [puzzleBoard, setPuzzleBoard] = useState<(string | null)[]>(Array(totalPieces).fill(null))
     const [unplacedPieces, setUnplacedPieces] = useState<Set<string>>(new Set())
-    const [url, setUrl] = useState(PuzzleImgs[0].imgUrl)
+    const [url, setUrl] = useState(PuzzleImgs[0]?.imgUrl)
 
     const shuffleArray = useCallback((array: string[]) => {
         const newArray = [...array]
