@@ -1,6 +1,5 @@
 import React from 'react'
 const PUZZLE_IMAGE_URL = "/p.jpg"
-// import Image from 'next/image'
 
 export default function page() {
     return (
@@ -57,7 +56,7 @@ export default function page() {
             {/* <Image
                 src={PUZZLE_IMAGE_URL}
                 width={1200}
-                height={1200}
+                height={1200}dsw2
                 alt="Puzzle Preview"
                 className="rounded-lg shadow-md"
             /> */}

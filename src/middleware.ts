@@ -23,3 +23,4 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: ['/((?!_next|favicon.ico|api).*)'], // Apply middleware to all routes except static, API
 }
+
