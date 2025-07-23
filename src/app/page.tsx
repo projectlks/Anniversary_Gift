@@ -28,7 +28,7 @@ export default function Page() {
       </div>
 
       {/* Centered text and button */}
-<div className="absolute aspect-[2/1] flex flex-col justify-center items-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 space-y-6 md:w-fit p-10 rounded-2xl bg-white/20 backdrop-blur-md border border-white/30 shadow-lg">
+      <div className="absolute aspect-[2/1] flex flex-col justify-center items-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 space-y-6 md:w-fit p-10 rounded-2xl bg-white/20 backdrop-blur-md border border-white/30 shadow-lg">
         <h1 className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-950 ${dancingScript.className}`}>
           Happy 3<sup>rd</sup> Anniversary, My Love
         </h1>
@@ -39,7 +39,7 @@ export default function Page() {
 
         {/* Button */}
         <button
-          onClick={() => router.push('/lock')}
+          onClick={() => router.push('/menus')}
           className="mt-4 px-6 py-2 rounded-full bg-rose-300 hover:bg-rose-400 text-white text-lg font-semibold transition-all duration-300 shadow-md hover:shadow-lg"
         >
           Open Gift

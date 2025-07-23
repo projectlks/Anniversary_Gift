@@ -35,6 +35,8 @@ export async function getAllImages() {
       },
     });
 
+    console.log("get all images ")
+
     return images ?? [];
   } catch (error) {
     console.error('Error fetching images:', error);
