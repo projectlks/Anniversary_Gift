@@ -60,7 +60,7 @@ export default function Menus() {
             bgColor="#e1bee7"
             circleColor="#f8bbd0"
             textColor="#ec407a"
-            goTo="journey"
+            goTo="puzzle"
           />
 
           <Box

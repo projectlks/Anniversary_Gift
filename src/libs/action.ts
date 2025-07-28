@@ -2,7 +2,6 @@
 "use server";
 
 
-// export const runtime = "nodejs"; // 👈 IMPORTANT LINE
 
 import { prisma } from "./prisma";
 
@@ -17,11 +16,24 @@ export async function incrementLoveClick() {
 }
 
 export async function getTotalCounts() {
-  const record = await prisma.clickCountTable.findUnique({
+  let record = await prisma.clickCountTable.findUnique({
     where: { id: 1 },
     select: { count: true },
   });
-  return record?.count ?? 0;  // record ရှိရင် count ကို return၊ မရှိရင် 0 return
+
+  if (!record) {
+    await prisma.clickCountTable.create({
+      data: {
+        id: 1,
+        count: 0,
+      },
+    });
+
+    // Fetch the record again after creation
+    record = { count: 0 };
+  }
+
+  return record.count;
 }
 
 export async function getAllImages() {
@@ -35,7 +47,6 @@ export async function getAllImages() {
       },
     });
 
-    console.log("get all images ")
 
     return images ?? [];
   } catch (error) {

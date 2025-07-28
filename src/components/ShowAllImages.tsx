@@ -1,31 +1,28 @@
 "use client";
-
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import { deleteImg } from "./action";
 import Loading from "@/components/Loading";
-export const revalidate = 60
+import { UploadedImage } from "@prisma/client";
+import { useState } from "react";
 
 
-interface UploadedImage {
-  id: number;
-  imgUrl: string;
-  uploadedAt: Date; // Date ကို string အနေနဲ့ သုံးဖို့ လုပ်ပါ (serialization issue မဖြစ်စေရန်)
-  isArchived: boolean;
-}
+
 
 interface Props {
   allImgs: UploadedImage[];
+  deleteImg: (id: number) => Promise<boolean>
+
+
 }
 
-export default function ShowAllImages({ allImgs }: Props) {
-  const [images, setImages] = useState<UploadedImage[]>([]);
+export default function ShowAllImages({ allImgs, deleteImg }: Props) {
+
+
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [images, setImages] = useState<UploadedImage[]>(allImgs);
 
-  useEffect(() => {
-    setImages(allImgs);
-  }, [allImgs]);
+
+
 
   const handleDelete = async (id: number) => {
     setLoading(true);
@@ -42,6 +39,9 @@ export default function ShowAllImages({ allImgs }: Props) {
       setLoading(false);
     }
   };
+
+
+
 
   return (
     <div className="grid grid-cols-2 xl:grid-cols-3 gap-4">

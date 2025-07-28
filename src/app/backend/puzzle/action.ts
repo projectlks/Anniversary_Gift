@@ -33,3 +33,21 @@ export async function getAllPuzzleImages() {
     return [];
   }
 } 
+
+
+export async function deletePuzzleImage(id: number) {
+  try {
+    await prisma.puzzleImages.update({
+      where: {
+        id: id,
+      },
+      data: {
+        isArchived: true,
+      },
+    });
+    return true; // optionally return success
+  } catch (error) {
+    console.error('Error archiving puzzle image:', error);
+    return false; // optionally return failure
+  }
+}
