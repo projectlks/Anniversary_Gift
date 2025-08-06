@@ -70,7 +70,7 @@ export default function Menus() {
             bgColor="#ffcdd2"
             circleColor="#b2dfdb"
             textColor="#ec407a"
-            goTo="journey"
+            goTo="note"
           />
 
 

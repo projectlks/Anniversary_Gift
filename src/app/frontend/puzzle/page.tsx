@@ -1,7 +1,7 @@
 
 import type React from "react"
 import PuzzleForm from "./PuzzleForm"
-import { getAllPuzzleImages } from "../backend/puzzle/action"
+import { getAllPuzzleImages } from "../../backend/puzzle/action"
 import { PuzzleImages } from "@prisma/client"
 export const revalidate = 60;
 const gridSize = 4

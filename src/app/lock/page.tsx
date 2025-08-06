@@ -40,7 +40,7 @@ export default function Lock() {
 
     setIsLoading(false);
     if (data.success) {
-      router.push('/menus') // or wherever you want
+      router.push('frontend/menus') // or wherever you want
       setIsSuccess(true);
     } else {
 
