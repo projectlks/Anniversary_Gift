@@ -16,7 +16,7 @@
     "@vercel/blob": "^1.1.1",
     "framer-motion": "^12.23.0",
     "lottie-react": "^2.4.1",
-    "next": "15.3.5",
+    "next": "15.3.8",
     "postcss": "^8.5.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -37,6 +37,3 @@
     "typescript": "^5"
   }
 }
-
-
-
