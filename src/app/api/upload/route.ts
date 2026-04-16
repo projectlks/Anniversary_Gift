@@ -1,7 +1,14 @@
 import { handleUpload, type HandleUploadBody } from '@vercel/blob/client';
+import { UserRole } from '@prisma/client';
 import { NextResponse } from 'next/server';
+import { auth } from '@/libs/auth';
 
 export async function POST(request: Request): Promise<NextResponse> {
+    const session = await auth();
+    if (!session?.user?.id || session.user.role !== UserRole.SUPER_ADMIN) {
+        return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
     const body = (await request.json()) as HandleUploadBody;
 
     try {

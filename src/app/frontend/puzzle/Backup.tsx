@@ -36,7 +36,7 @@ export default function PuzzleForm({ totalPieces, gridSize, PuzzleImgs }: Prop) 
         const initialDraggableIds = Array.from({ length: totalPieces }, (_, i) => `drag${i + 1}`)
         setUnplacedPieces(new Set(shuffleArray(initialDraggableIds)))
         setPuzzleBoard(Array(totalPieces).fill(null)) // Ensure board is empty initially
-    }, [shuffleArray])
+    }, [shuffleArray, totalPieces])
 
     const allowDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault()
@@ -106,7 +106,7 @@ export default function PuzzleForm({ totalPieces, gridSize, PuzzleImgs }: Prop) 
         if (completed) {
             console.log("Puzzle completed! 🎉")
         }
-    }, [puzzleBoard])
+    }, [puzzleBoard, totalPieces])
 
     // Call checkComplete whenever puzzleBoard changes
     useEffect(() => {
@@ -117,7 +117,7 @@ export default function PuzzleForm({ totalPieces, gridSize, PuzzleImgs }: Prop) 
         const initialDraggableIds = Array.from({ length: totalPieces }, (_, i) => `drag${i + 1}`)
         setUnplacedPieces(new Set(shuffleArray(initialDraggableIds)))
         setPuzzleBoard(Array(totalPieces).fill(null))
-    }, [shuffleArray])
+    }, [shuffleArray, totalPieces])
 
 
     const allPuzzlePieces = Array.from({ length: totalPieces }, (_, i) => {

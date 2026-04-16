@@ -1,29 +1,33 @@
 "use client";
 import { Box } from "@/components/Box";
-import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
+import { useState } from "react";
 
 export default function Menus() {
-
-  const router = useRouter();
-
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
 
   const handleLogout = async () => {
-    await fetch('/api/lock', { method: 'POST' })
-    router.push('/lock') // redirect to lock page after locking
+    setIsLoggingOut(true);
+    try {
+      await fetch("/api/lock", { method: "POST" });
+      await signOut({ callbackUrl: "/auth/signin" });
+    } finally {
+      setIsLoggingOut(false);
+    }
   };
   return (
     <div className="flex flex-col space-y-5 items-center min-h-screen overflow-y-scroll scrollbar-hide pt-[100px] justify-start]">
       <h1 className="text-4xl font-bold text-[#a2d2ff] tracking-widest uppercase">Menu of Our Love</h1>
 
 
-      <div onClick={handleLogout} className="flex items-center justify-center gap-5 text-2xl text-red-500">
-
-        <p>
-          Logout
-        </p>
-
-      </div>
+      <button
+        onClick={handleLogout}
+        disabled={isLoggingOut}
+        className="flex items-center justify-center gap-5 text-2xl text-red-500 disabled:opacity-60 disabled:cursor-not-allowed"
+      >
+        <p>{isLoggingOut ? "Logging out..." : "Logout"}</p>
+      </button>
 
       <div className="flex items-center justify-center gap-5 text-2xl text-red-500">
         <HeartIcon1 />
@@ -40,7 +44,7 @@ export default function Menus() {
             bgColor="#fce4ec"
             circleColor="#f8bbd0"
             textColor="#ec407a"
-            goTo="memories"
+            goTo="/frontend/memories"
           />
 
           <Box
@@ -50,7 +54,7 @@ export default function Menus() {
             bgColor="#ffcdd2"
             circleColor="#f8bbd0"
             textColor="#ec407a"
-            goTo="journey"
+            goTo="/frontend/journey"
           />
 
           <Box
@@ -60,7 +64,7 @@ export default function Menus() {
             bgColor="#e1bee7"
             circleColor="#f8bbd0"
             textColor="#ec407a"
-            goTo="puzzle"
+            goTo="/frontend/puzzle"
           />
 
           <Box
@@ -70,7 +74,7 @@ export default function Menus() {
             bgColor="#ffcdd2"
             circleColor="#b2dfdb"
             textColor="#ec407a"
-            goTo="note"
+            goTo="/frontend/note"
           />
 
 

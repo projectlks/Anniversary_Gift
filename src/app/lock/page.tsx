@@ -4,7 +4,7 @@ import Image from 'next/image'
 import img1 from "../../imgs/download.png"
 import c from "../../imgs/sticker.png"
 import Keyboard from '@/components/Keyboard'
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Dancing_Script, Albert_Sans } from 'next/font/google';
 import { useRouter } from 'next/navigation';
 import Loading from '@/components/Loading'
@@ -24,7 +24,7 @@ export default function Lock() {
 
 
 
-  const checkCode = async () => {
+  const checkCode = useCallback(async () => {
 
     setIsLoading(true);
 
@@ -40,7 +40,7 @@ export default function Lock() {
 
     setIsLoading(false);
     if (data.success) {
-      router.push('frontend/menus') // or wherever you want
+      router.push(data.redirectTo ?? '/frontend/menus')
       setIsSuccess(true);
     } else {
 
@@ -50,7 +50,7 @@ export default function Lock() {
         setNumber([]);
       }, 1000);
     }
-  }
+  }, [number, router])
 
   useEffect(() => {
 
@@ -60,7 +60,7 @@ export default function Lock() {
     if (number.length === 6) {
       checkCode();
     }
-  }, [number]);
+  }, [number, checkCode]);
   return (
     <section className="w-full h-screen flex justify-center overflow-hidden items-center bg-[radial-gradient(circle,_#FFC8DD,_#ffffff)]">
       <div className='w-[90%] max-w-7xl rounded-tl-[50px] overflow-hidden rounded-br-[50px] bg-white pr-0  md:p-3 flex h-[95%] '>

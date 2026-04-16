@@ -1,71 +1,65 @@
-
 "use server";
 
-
-
-import { prisma } from "./prisma";
-
+import { prisma } from "@/libs/prisma";
+import { requireViewerContext, resolveCoupleScope } from "@/libs/authz";
 
 export async function incrementLoveClick() {
+  const viewer = await requireViewerContext();
+  if (!viewer.coupleId) return;
 
-
-  await prisma.clickCountTable.update({
-    where: { id: 1 }, // Assuming you have a single record to update
-    data: { count: { increment: 1 } },
-  })
+  await prisma.clickCountTable.upsert({
+    where: { coupleId: viewer.coupleId },
+    create: {
+      coupleId: viewer.coupleId,
+      count: 1,
+    },
+    update: {
+      count: { increment: 1 },
+    },
+  });
 }
 
 export async function getTotalCounts() {
-  let record = await prisma.clickCountTable.findUnique({
-    where: { id: 1 },
+  const viewer = await requireViewerContext();
+  if (!viewer.coupleId) return 0;
+
+  const record = await prisma.clickCountTable.findUnique({
+    where: { coupleId: viewer.coupleId },
     select: { count: true },
   });
 
-  if (!record) {
-    await prisma.clickCountTable.create({
-      data: {
-        id: 1,
-        count: 0,
-      },
-    });
-
-    // Fetch the record again after creation
-    record = { count: 0 };
-  }
-
-  return record.count;
+  return record?.count ?? 0;
 }
 
-export async function getAllImages() {
-  try {
-    const images = await prisma.uploadedImage.findMany({
-      where: {
-        isArchived: false,
-      },
-      orderBy: {
-        uploadedAt: 'desc',
-      },
-    });
+export async function getAllImages(targetCoupleId?: string) {
+  const { viewer, couple } = await resolveCoupleScope(targetCoupleId);
 
+  const where =
+    viewer.isAdmin && targetCoupleId === "all"
+      ? { isArchived: false }
+      : { isArchived: false, coupleId: couple.id };
 
-    return images ?? [];
-  } catch (error) {
-    console.error('Error fetching images:', error);
-    return [];
-  }
+  const images = await prisma.uploadedImage.findMany({
+    where,
+    orderBy: { uploadedAt: "desc" },
+  });
+
+  return images ?? [];
 }
 
+export async function getLoveNote(targetCoupleId?: string) {
+  const { couple } = await resolveCoupleScope(targetCoupleId);
 
-
-export async function validateCode(code: string) {
-  const secretCode = process.env.APP_SECRET_CODE;
-
-  if (code === secretCode) {
-
-    return { valid: true };
-  } else {
-    return { valid: false };
-  }
+  return prisma.loveNote.findUnique({
+    where: { coupleId: couple.id },
+  });
 }
 
+export async function getJourneyEntries(targetCoupleId?: string) {
+  const { couple } = await resolveCoupleScope(targetCoupleId);
 
+  return prisma.journeyEntry.findMany({
+    where: { coupleId: couple.id },
+    orderBy: [{ eventDate: "asc" }, { sortOrder: "asc" }],
+  });
+}

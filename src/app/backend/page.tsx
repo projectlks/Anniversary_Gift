@@ -3,12 +3,26 @@
 import type React from "react"
 
 import { useRouter } from "next/navigation"
+import { useState } from "react"
+import { signOut } from "next-auth/react"
 // import { ImageDownIcon, HeartIcon, CalendarDaysIcon, CameraIcon } from "lucide-react" // Specific Lucide React icons
 
 export default function AddMenuPage() {
     const router = useRouter()
+    const [isLoggingOut, setIsLoggingOut] = useState(false)
+
     const handleNavigate = (path: string) => {
         router.push(path)
+    }
+
+    const handleLogout = async () => {
+        setIsLoggingOut(true)
+        try {
+            await fetch("/api/lock", { method: "POST" })
+            await signOut({ callbackUrl: "/auth/signin" })
+        } finally {
+            setIsLoggingOut(false)
+        }
     }
 
     return (
@@ -33,15 +47,23 @@ export default function AddMenuPage() {
                 <span className="text-2xl font-semibold text-pink-600 block mt-2">Your Love Story, Beautifully Captured</span>
             </h1>
 
+            <button
+                onClick={handleLogout}
+                disabled={isLoggingOut}
+                className="absolute top-6 right-6 z-20 rounded-full border border-rose-300 bg-white/90 px-5 py-2 text-sm font-semibold text-rose-700 shadow hover:bg-white disabled:cursor-not-allowed disabled:opacity-60"
+            >
+                {isLoggingOut ? "Logging out..." : "Logout"}
+            </button>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-3xl z-10">
 
-                 <AddCard
+                <AddCard
                     title="Add Anniversary Memory"
                     icon={<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-8">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z" />
                     </svg>
                     }
-                    onClick={() => handleNavigate("backend/imagesUpload")}
+                    onClick={() => handleNavigate("/backend/imagesUpload")}
                 />
                 <AddCard
                     title="Add Puzzle Image"
@@ -49,25 +71,32 @@ export default function AddMenuPage() {
                         <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
                     </svg>
                     }
-                    onClick={() => handleNavigate("backend/puzzle")}
+                    onClick={() => handleNavigate("/backend/puzzle")}
                 />
                 <AddCard
-                    title="Add Love Note"
+                    title="Manage Love Note"
                     icon={<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-8">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
                     </svg>
                     }
-                    onClick={() => handleNavigate("/notes/add")}
+                    onClick={() => handleNavigate("/backend/note")}
                 />
                
                 <AddCard
-                    title="Add Journey Photo"
+                    title="Manage Journey"
                     icon={<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-8">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z" />
                         <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z" />
                     </svg>
                     }
-                    onClick={() => handleNavigate("/journey/add")}
+                    onClick={() => handleNavigate("/backend/journey")}
+                />
+                <AddCard
+                    title="Manage Couples"
+                    icon={<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-8">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.742-.479 3 3 0 0 0-4.682-2.72m.94 3.198-.94-.001a3 3 0 0 0-5.682 0m5.682 0A3 3 0 0 1 12 21a3 3 0 0 1-5.06-2.282m10.12 0A9.094 9.094 0 0 1 12 18c-1.03 0-2.024.172-2.94.49m0 0a3 3 0 0 1-4.681-2.72A9.094 9.094 0 0 1 6 18.72m0 0A9.094 9.094 0 0 1 2.258 18.24a3 3 0 0 1 4.682-2.72M6 18.72m6-8.22a3 3 0 1 0-6 0 3 3 0 0 0 6 0Zm6 3a2.25 2.25 0 1 0-4.5 0 2.25 2.25 0 0 0 4.5 0Zm-13.5 0a2.25 2.25 0 1 0-4.5 0 2.25 2.25 0 0 0 4.5 0Z" />
+                    </svg>}
+                    onClick={() => handleNavigate("/backend/couples")}
                 />
             </div>
         </main>

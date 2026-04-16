@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react'
 import { uploadImageFunction } from './action';
 
-export default function Form() {
+export default function Form({ targetCoupleId }: { targetCoupleId?: string }) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -93,10 +93,13 @@ export default function Form() {
 
 
 
-            const res = await uploadImageFunction(response.url);
+            const res = await uploadImageFunction(response.url, targetCoupleId);
 
             if (res) {
-                router.push('/puzzle');
+                const nextPath = targetCoupleId
+                    ? `/backend/puzzle?coupleId=${targetCoupleId}`
+                    : '/backend/puzzle';
+                router.push(nextPath);
             } else {
                 throw new Error('Failed to save image to database.');
             }

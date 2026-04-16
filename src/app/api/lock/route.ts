@@ -1,15 +1,29 @@
-import { NextResponse } from 'next/server'
+import { NextResponse } from "next/server";
+import { auth } from "@/libs/auth";
+import { logAudit } from "@/libs/audit";
 
 export async function POST() {
-  const res = NextResponse.json({ success: true })
+  const session = await auth();
+  if (!session?.user?.id) {
+    return NextResponse.json({ success: false, message: "Unauthorized" }, { status: 401 });
+  }
 
-  // To "lock" again, delete the cookie or set it to false with immediate expiration
-  res.cookies.set('unlocked', 'false', {
+  const res = NextResponse.json({ success: true });
+  res.cookies.set("unlockedCoupleId", "", {
     httpOnly: true,
-    path: '/',
-    maxAge: 0, // immediately expire
-    sameSite: 'strict',
-  })
+    path: "/",
+    maxAge: 0,
+    sameSite: "strict",
+    secure: process.env.NODE_ENV === "production",
+  });
 
-  return res
+  await logAudit({
+    actorId: session.user.id,
+    coupleId: session.user.coupleId ?? null,
+    action: "COUPLE_LOCK",
+    entityType: "COUPLE",
+    entityId: session.user.coupleId ?? null,
+  });
+
+  return res;
 }

@@ -1,12 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Paper from "./Paper";
+import Paper, { LoveNoteView } from "./Paper";
 import Steal from "./Steal";
 
 export default function Page() {
   const [isOpen, setIsOpen] = useState(false);
   const [isFirstTime, setIsFirstTime] = useState(true);
+  const [note, setNote] = useState<LoveNoteView>({
+    dateLabel: "",
+    title: "My Dearest Love,",
+    greeting: "My Dearest Love,",
+    content: "Every moment with you is a memory I treasure forever.",
+    closing: "Forever and always yours,",
+    signature: "Your Beloved",
+  });
 
   // For simulating z-index animation
   const [zIndex, setZIndex] = useState(30);
@@ -32,6 +40,17 @@ export default function Page() {
       return () => clearTimeout(timeout);
     }
   }, [isReversing]);
+
+  useEffect(() => {
+    const fetchNote = async () => {
+      const response = await fetch("/api/note");
+      if (!response.ok) return;
+      const data = (await response.json()) as LoveNoteView;
+      setNote(data);
+    };
+
+    fetchNote();
+  }, []);
 
   return (
     <section className="w-full h-screen flex justify-center items-center overflow-y-auto bg-[radial-gradient(circle,_#FFC8DD,_#ffffff)]">
@@ -74,7 +93,7 @@ export default function Page() {
           `}
         >
 
-          <Paper />
+          <Paper note={note} />
 
         </div>
 

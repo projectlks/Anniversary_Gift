@@ -39,7 +39,7 @@ export default function Page() {
 
         {/* Button */}
         <button
-          onClick={() => router.push('/menus')}
+          onClick={() => router.push('/lock')}
           className="mt-4 px-6 py-2 rounded-full bg-rose-300 hover:bg-rose-400 text-white text-lg font-semibold transition-all duration-300 shadow-md hover:shadow-lg"
         >
           Open Gift

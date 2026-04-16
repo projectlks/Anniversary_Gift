@@ -1,22 +1,27 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Dancing_Script, Albert_Sans } from 'next/font/google';
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { Dancing_Script, Albert_Sans } from "next/font/google";
 import ClickCount from "@/components/ClickCount";
 
-
-const dancingScript = Dancing_Script({ subsets: ['latin'], weight: ["400", "700"] });
-const albertSans = Albert_Sans({ subsets: ['latin'], weight: ["300", "600"] });
-
-
+const dancingScript = Dancing_Script({ subsets: ["latin"], weight: ["400", "700"] });
+const albertSans = Albert_Sans({ subsets: ["latin"], weight: ["300", "600"] });
 
 interface TimeElapsed {
-  years: number
-  months: number
-  days: number
-  hours: number
-  minutes: number
-  seconds: number
+  years: number;
+  months: number;
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+}
+
+interface JourneyEntry {
+  id: string;
+  title: string;
+  description: string | null;
+  eventDate: string;
+  sortOrder: number;
 }
 
 export default function RomanticJourneyMyanmar() {
@@ -27,52 +32,43 @@ export default function RomanticJourneyMyanmar() {
     hours: 0,
     minutes: 0,
     seconds: 0,
-  })
+  });
 
-  const [currentMyanmarTime, setCurrentMyanmarTime] = useState<string>("")
+  const [currentMyanmarTime, setCurrentMyanmarTime] = useState<string>("");
+  const [startDate, setStartDate] = useState<Date>(new Date("2022-10-01T00:00:00+06:30"));
+  const [journeyEntries, setJourneyEntries] = useState<JourneyEntry[]>([]);
 
-  // Get current Myanmar time (UTC+6:30)
-  const getMyanmarTime = () => {
-    const now = new Date()
-    // Convert to Myanmar time (UTC+6:30)
-    return new Date(now.toLocaleString("en-US", { timeZone: "Asia/Yangon" }))
-  }
+  const getMyanmarTime = useCallback(() => {
+    const now = new Date();
+    return new Date(now.toLocaleString("en-US", { timeZone: "Asia/Yangon" }));
+  }, []);
 
-  // Start date in Myanmar time
-  const getStartDateMyanmar = () => {
-    // October 1, 2022 at 00:00:00 Myanmar time
-    return new Date("2022-10-01T00:00:00+06:30")
-  }
+  const calculateTimeElapsed = useCallback(() => {
+    const nowMyanmar = getMyanmarTime();
+    const diffInMs = nowMyanmar.getTime() - startDate.getTime();
 
-  const calculateTimeElapsed = () => {
-    const nowMyanmar = getMyanmarTime()
-    const startMyanmar = getStartDateMyanmar()
-    const diffInMs = nowMyanmar.getTime() - startMyanmar.getTime()
+    const totalSeconds = Math.max(0, Math.floor(diffInMs / 1000));
+    const totalMinutes = Math.floor(totalSeconds / 60);
+    const totalHours = Math.floor(totalMinutes / 60);
+    const totalDays = Math.floor(totalHours / 24);
 
-    // Calculate time units
-    const totalSeconds = Math.floor(diffInMs / 1000)
-    const totalMinutes = Math.floor(totalSeconds / 60)
-    const totalHours = Math.floor(totalMinutes / 60)
-    const totalDays = Math.floor(totalHours / 24)
+    const years = Math.floor(totalDays / 365.25);
+    const remainingDaysAfterYears = totalDays - Math.floor(years * 365.25);
+    const months = Math.floor(remainingDaysAfterYears / 30.44);
+    const days = Math.floor(remainingDaysAfterYears - months * 30.44);
 
-    // Calculate years (accounting for leap years)
-    const years = Math.floor(totalDays / 365.25)
-    const remainingDaysAfterYears = totalDays - Math.floor(years * 365.25)
+    return {
+      years,
+      months,
+      days,
+      hours: totalHours % 24,
+      minutes: totalMinutes % 60,
+      seconds: totalSeconds % 60,
+    };
+  }, [getMyanmarTime, startDate]);
 
-    // Calculate months (approximate)
-    const months = Math.floor(remainingDaysAfterYears / 30.44)
-    const days = Math.floor(remainingDaysAfterYears - months * 30.44)
-
-    // Calculate remaining hours, minutes, seconds
-    const hours = totalHours % 24
-    const minutes = totalMinutes % 60
-    const seconds = totalSeconds % 60
-
-    return { years, months, days, hours, minutes, seconds }
-  }
-
-  const formatMyanmarTime = () => {
-    const now = new Date()
+  const formatMyanmarTime = useCallback(() => {
+    const now = new Date();
     return now.toLocaleString("en-US", {
       timeZone: "Asia/Yangon",
       weekday: "long",
@@ -83,100 +79,40 @@ export default function RomanticJourneyMyanmar() {
       minute: "2-digit",
       second: "2-digit",
       hour12: true,
-    })
-  }
+    });
+  }, []);
 
-  // Get total counts in Myanmar time
-  const getTotalCounts = () => {
-    const nowMyanmar = getMyanmarTime()
-    const startMyanmar = getStartDateMyanmar()
-    const diffInMs = nowMyanmar.getTime() - startMyanmar.getTime()
-
+  const totalCounts = useMemo(() => {
+    const nowMyanmar = getMyanmarTime();
+    const diffInMs = nowMyanmar.getTime() - startDate.getTime();
     return {
-      totalDays: Math.floor(diffInMs / (1000 * 60 * 60 * 24)),
-      totalHours: Math.floor(diffInMs / (1000 * 60 * 60)),
-      totalMinutes: Math.floor(diffInMs / (1000 * 60)),
-      totalSeconds: Math.floor(diffInMs / 1000),
-    }
-  }
+      totalDays: Math.max(0, Math.floor(diffInMs / (1000 * 60 * 60 * 24))),
+      totalHours: Math.max(0, Math.floor(diffInMs / (1000 * 60 * 60))),
+      totalMinutes: Math.max(0, Math.floor(diffInMs / (1000 * 60))),
+      totalSeconds: Math.max(0, Math.floor(diffInMs / 1000)),
+    };
+  }, [getMyanmarTime, startDate]);
+
+  useEffect(() => {
+    const fetchJourney = async () => {
+      const response = await fetch("/api/journey");
+      if (!response.ok) return;
+      const data = (await response.json()) as { startDate: string | null; entries: JourneyEntry[] };
+      if (data.startDate) setStartDate(new Date(data.startDate));
+      setJourneyEntries(data.entries ?? []);
+    };
+    fetchJourney();
+  }, []);
 
   useEffect(() => {
     const updateAllTimes = () => {
-      setTimeElapsed(calculateTimeElapsed())
-      setCurrentMyanmarTime(formatMyanmarTime())
-    }
-
-    // Update immediately
-    updateAllTimes()
-
-    // Update every second
-    const interval = setInterval(updateAllTimes, 1000)
-    return () => clearInterval(interval)
-  }, [])
-
-
-
-
-  // const albertSans = Albert_Sans({ subsets: ['latin'], weight: ["300", "600"] });
-
-
-  const TimeUnit = ({ value, label }: { value: number; label: string }) => (
-    <div className="group relative w-40 h-40">
-      {/* SVG heart clip path definition */}
-      <svg viewBox="0 0 32 29.6" className="absolute inset-0 w-full h-full z-0 pointer-events-none">
-        <defs>
-          <clipPath id="heartClip" clipPathUnits="objectBoundingBox">
-            <path
-              d="M0.5,0.9
-            C0.2,0.7,0,0.4,0.1,0.2
-            C0.2,0,0.4,0,0.5,0.2
-            C0.6,0,0.8,0,0.9,0.2
-            C1,0.4,0.8,0.7,0.5,0.9Z"
-            />
-          </clipPath>
-        </defs>
-      </svg>
-
-      {/* Centered ping animation */}
-      <span
-        style={{ clipPath: 'url(#heartClip)' }}
-        className="absolute w-[80%] h-[80%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-ping bg-rose-400 opacity-50 z-0"
-      ></span>
-
-      {/* Centered ping animation */}
-      <span
-        style={{ clipPath: 'url(#heartClip)' }}
-        className="absolute w-[95%] h-[95%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-ping bg-rose-400 opacity-50 z-0"
-      ></span>
-
-
-      {/* Main heart card with gradient & shadow */}
-      <div
-        className="w-full h-full flex items-center justify-center p-4 sm:p-6 bg-gradient-to-br from-rose-400 via-pink-500 to-pink-800 text-white shadow-xl border border-white/30 hover:shadow-2xl hover:scale-105 transition-all duration-500 backdrop-blur-md relative z-10 pulse-heart"
-        style={{ clipPath: 'url(#heartClip)' }}
-      >
-        {/* Floating heart icon */}
-        <div className="absolute -top-2 -right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
-          <span className="text-white/70 text-xs animate-bounce">♡</span>
-        </div>
-
-        {/* Main content */}
-        <div className="text-center">
-          <div className={`text-2xl sm:text-3xl lg:text-4xl select-none font-bold ${albertSans.className}`}>
-            {value.toString().padStart(2, '0')}
-          </div>
-          <div className={`text-sm sm:text-base  font-semibold select-none text-white/90 mt-1 ${dancingScript.className}`}>
-            {label}
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-
-
-
-  )
+      setTimeElapsed(calculateTimeElapsed());
+      setCurrentMyanmarTime(formatMyanmarTime());
+    };
+    updateAllTimes();
+    const interval = setInterval(updateAllTimes, 1000);
+    return () => clearInterval(interval);
+  }, [calculateTimeElapsed, formatMyanmarTime]);
 
   const timeUnits = [
     { value: timeElapsed.years, label: "Years" },
@@ -185,166 +121,81 @@ export default function RomanticJourneyMyanmar() {
     { value: timeElapsed.hours, label: "Hours" },
     { value: timeElapsed.minutes, label: "Minutes" },
     { value: timeElapsed.seconds, label: "Seconds" },
-  ]
-
-  const totalCounts = getTotalCounts()
+  ];
 
   return (
     <div className={`relative min-h-screen overflow-hidden bg-gradient-to-br from-pink-50 to-rose-50 ${albertSans.className}`}>
-      {/* Floating romantic elements */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-10 left-10 text-pink-300 text-2xl animate-float opacity-30">♡</div>
-        <div
-          className="absolute top-32 right-20 text-rose-300 text-xl animate-bounce opacity-40"
-          style={{ animationDelay: "1s" }}
-        >
-          💕
-        </div>
-        <div
-          className="absolute bottom-40 left-16 text-purple-300 text-lg animate-pulse opacity-35"
-          style={{ animationDelay: "2s" }}
-        >
-          ✨
-        </div>
-        <div
-          className="absolute bottom-20 right-10 text-pink-400 text-xl animate-float opacity-30"
-          style={{ animationDelay: "3s" }}
-        >
-          🌹
-        </div>
-        <div
-          className="absolute top-1/2 left-8 text-rose-300 text-sm animate-bounce opacity-25"
-          style={{ animationDelay: "4s" }}
-        >
-          💖
-        </div>
-      </div>
-
       <div className="relative z-10 px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <div className="max-w-7xl mx-auto">
-          {/* Romantic Header */}
           <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-            <div className="mb-4">
-              <span className="text-4xl sm:text-5xl p-4 rounded-full border border-rose-600 lg:text-6xl">💕</span>
-            </div>
-            <h1 className={`text-3xl sm:text-4xl lg:text-6xl mt-5 font-bold bg-gradient-to-r from-[#FFC8DD] via-rose-500 to-[#FFAFCC] bg-clip-text text-transparent mb-4 leading-tight ${dancingScript.className} font-extrabold`}>
+            <h1
+              className={`text-3xl sm:text-4xl lg:text-6xl mt-5 font-bold bg-gradient-to-r from-[#FFC8DD] via-rose-500 to-[#FFAFCC] bg-clip-text text-transparent mb-4 leading-tight ${dancingScript.className}`}
+            >
               Our Love Story
             </h1>
             <p className={`text-rose-600 text-base sm:text-lg lg:text-xl font-medium max-w-2xl mx-auto leading-relaxed ${albertSans.className}`}>
-              Every moment since October 1st, 2022 has been magical ✨
+              Every moment has been magical.
             </p>
-            <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-pink-400 via-rose-400 to-purple-400 mx-auto mt-4 sm:mt-6 rounded-full"></div>
           </div>
 
+          <ClickCount />
 
-
-          {/* love click Count */}
-     <ClickCount  />
-
-          {/* Myanmar Time Display - Updates Every Second */}
           <div className="text-center mb-6 sm:mb-8">
-
             <p className="text-rose-600 text-xs sm:text-sm font-medium mt-2 max-w-md mx-auto font-mono">
               {currentMyanmarTime}
             </p>
           </div>
 
-          {/* Responsive Time Display Grid - Updates Every Second */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 mt-20 gap-3 sm:gap-4 lg:gap-6 mb-8 sm:mb-12 lg:mb-16">
-            {timeUnits.map((unit, index) => (
-              <TimeUnit key={index} value={unit.value} label={unit.label} />
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 mt-8 gap-3 sm:gap-4 lg:gap-6 mb-12">
+            {timeUnits.map((unit) => (
+              <div
+                key={unit.label}
+                className="rounded-2xl bg-white/80 border border-rose-200 p-4 text-center shadow-sm"
+              >
+                <div className="text-3xl font-bold text-rose-600">
+                  {unit.value.toString().padStart(2, "0")}
+                </div>
+                <div className={`text-sm text-rose-500 ${dancingScript.className}`}>{unit.label}</div>
+              </div>
             ))}
           </div>
 
-
-
-
-
-
-          {/* Romantic Milestones Section - Updates Every Second */}
-          <div className="bg-white/60 backdrop-blur-lg rounded-3xl sm:rounded-[2rem] p-6 sm:p-8 lg:p-12 shadow-2xl border border-pink-200/30 mb-8">
-            <div className="text-center mb-6 sm:mb-8">
-              <h2 className={`text-2xl sm:text-3xl lg:text-4xl font-bold text-rose-600 mb-2 ${dancingScript.className}`}>
-                Love Milestones 💖
-              </h2>
-              <p className={`text-rose-500 text-sm sm:text-base font-medium max-w-2xl mx-auto ${albertSans.className}`}>
-                Every moment counts — just like every beat of my heart for you.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-              <div className="text-center p-4 sm:p-6 bg-gradient-to-br from-pink-50 to-rose-50 rounded-2xl border border-pink-200/50 hover:shadow-lg transition-all duration-300">
-                <div className={`text-2xl sm:text-3xl lg:text-4xl font-bold text-rose-600 mb-2 ${albertSans.className}`}>
-                  {totalCounts.totalDays.toLocaleString()}
-                </div>
-                <div className={`text-rose-600 font-semibold text-sm sm:text-base flex items-center justify-center gap-1 ${dancingScript.className}`}>
-                  <span>🌹</span > Total Days <span>🌹</span>
-                </div>
-              </div>
-
-              <div className="text-center p-4 sm:p-6 bg-gradient-to-br from-rose-50 to-purple-50 rounded-2xl border border-rose-200/50 hover:shadow-lg transition-all duration-300">
-                <div className={`text-2xl sm:text-3xl lg:text-4xl font-bold text-rose-600 mb-2 ${albertSans.className}`}>
-                  {totalCounts.totalHours.toLocaleString()}
-                </div>
-                <div className={`text-purple-600 font-semibold text-sm sm:text-base flex items-center justify-center gap-1 ${dancingScript.className}`}>
-                  <span>💕</span> Total Hours <span>💕</span>
-                </div>
-              </div>
-
-              <div className="text-center p-4 sm:p-6 bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl border border-purple-200/50 hover:shadow-lg transition-all duration-300">
-                <div className={`text-2xl sm:text-3xl lg:text-4xl font-bold text-purple-600 mb-2 ${albertSans.className}`}>
-                  {totalCounts.totalMinutes.toLocaleString()}
-                </div>
-                <div className={`text-pink-600 font-semibold text-sm sm:text-base flex items-center justify-center gap-1 ${dancingScript.className}`}>
-                  <span>✨</span> Total Minutes <span>✨</span>
-                </div>
-              </div>
-
-              <div className="text-center p-4 sm:p-6 bg-gradient-to-br from-pink-50 to-rose-50 rounded-2xl border border-pink-200/50 hover:shadow-lg transition-all duration-300">
-                <div className={`text-2xl sm:text-3xl lg:text-4xl font-bold text-rose-600 mb-2 ${albertSans.className}`}>
-                  {totalCounts.totalSeconds.toLocaleString()}
-                </div>
-                <div className={`text-rose-600 font-semibold text-sm sm:text-base flex items-center justify-center gap-1 ${dancingScript.className}`}>
-                  <span>💖</span> Total Seconds <span>💖</span>
-                </div>
-              </div>
+          <div className="bg-white/60 backdrop-blur-lg rounded-3xl p-6 sm:p-8 shadow-2xl border border-pink-200/30 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <StatCard label="Total Days" value={totalCounts.totalDays.toLocaleString()} />
+              <StatCard label="Total Hours" value={totalCounts.totalHours.toLocaleString()} />
+              <StatCard label="Total Minutes" value={totalCounts.totalMinutes.toLocaleString()} />
+              <StatCard label="Total Seconds" value={totalCounts.totalSeconds.toLocaleString()} />
             </div>
           </div>
 
-          {/* Live Status & Love Quote */}
-          <div className="text-center space-y-4 sm:space-y-6">
-            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-pink-100 to-rose-100 text-rose-700 px-4 sm:px-6 py-2 sm:py-3 rounded-full border border-pink-200/50 shadow-lg backdrop-blur-sm">
-              <span className="relative flex size-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
-                <span className="relative inline-flex size-2 rounded-full bg-green-500"></span>
-              </span>
-              <span className="text-sm sm:text-base font-semibold">Live Love Counter 💖</span>
-              {/* <span className="text-xs bg-amber-200 text-amber-800 px-2 py-1 rounded-full font-mono">🇲🇲 UTC+6:30</span> */}
-            </div>
-
-            <div className="max-w-2xl mx-auto">
-              <p className="text-rose-600 text-sm sm:text-base lg:text-lg font-medium italic leading-relaxed">
-                &quot;Every second with you feels like a beautiful eternity. Our love grows stronger with each passing moment.&quot; 💕
-              </p>
-
-            </div>
-
-
-
+          <div className="bg-white rounded-3xl border border-rose-200 p-6 shadow-md">
+            <h2 className={`text-3xl text-rose-700 mb-4 ${dancingScript.className}`}>Journey Timeline</h2>
+            {journeyEntries.length === 0 ? (
+              <p className="text-gray-500">No milestones added yet.</p>
+            ) : (
+              <div className="space-y-3">
+                {journeyEntries.map((entry) => (
+                  <div key={entry.id} className="border border-rose-100 rounded-xl p-4 bg-rose-50/50">
+                    <p className="text-sm text-rose-500">{new Date(entry.eventDate).toLocaleDateString()}</p>
+                    <h3 className="text-lg font-semibold text-rose-700">{entry.title}</h3>
+                    {entry.description && <p className="text-gray-600">{entry.description}</p>}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
-
-      {/* Custom CSS for floating animation */}
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-10px) rotate(5deg); }
-        }
-        .animate-float {
-          animation: float 3s ease-in-out infinite;
-        }
-      `}</style>
     </div>
-  )
+  );
+}
+
+function StatCard({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="text-center p-4 bg-gradient-to-br from-pink-50 to-rose-50 rounded-2xl border border-pink-200/50 hover:shadow-lg transition-all duration-300">
+      <div className="text-2xl sm:text-3xl font-bold text-rose-600 mb-2">{value}</div>
+      <div className="text-rose-600 font-semibold text-sm sm:text-base">{label}</div>
+    </div>
+  );
 }
