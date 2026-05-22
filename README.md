@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Anniversary Gift (Multi-User, Admin Managed)
 
-## Getting Started
+Romantic couple web app built with Next.js + Prisma + PostgreSQL.
 
-First, run the development server:
+## Core Features
+
+- Magic link sign-in (Auth.js + SMTP)
+- Super admin dashboard
+- Admin-only CRUD for:
+  - Couples
+  - Memory images
+  - Puzzle images
+  - Journey milestones
+  - Dynamic love notes
+  - Per-couple passcode + media limits
+- Couple-private frontend data
+- Per-couple lock/unlock flow
+- Audit logging for sensitive actions
+
+## Tech Stack
+
+- Next.js 15
+- React 19
+- Prisma
+- PostgreSQL
+- Vercel Blob
+- Auth.js (NextAuth)
+
+## Environment Setup
+
+1. Copy `.env.example` to `.env`.
+2. Fill all required values:
+   - `DATABASE_URL`
+   - `BLOB_READ_WRITE_TOKEN`
+   - `NEXTAUTH_URL`
+   - `AUTH_SECRET`
+   - `SMTP_HOST`
+   - `SMTP_PORT`
+   - `SMTP_SECURE`
+   - `SMTP_USER`
+   - `SMTP_PASS`
+   - `EMAIL_FROM`
+   - `SUPER_ADMIN_EMAIL`
+   - `PASSCODE_PEPPER`
+
+For local development only, if SMTP settings are missing, the app logs the magic link URL in the server terminal instead of sending email.
+
+For Gmail, use App Password (not your normal account password).
+
+## Run Locally
 
 ```bash
+npm install
+npx prisma migrate deploy
+npx prisma generate
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Admin Flow
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Sign in using `SUPER_ADMIN_EMAIL`.
+2. Go to `/backend/couples` and create a couple.
+3. Invite couple members by email.
+4. Members sign in through magic link.
+5. Members unlock with that couple's passcode.
+6. Members can view content only; admin manages all CRUD.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Security Notes
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Rotate all leaked/old secrets before deploying.
+- Keep `.env` out of git history.
+- Use strong `AUTH_SECRET` and `PASSCODE_PEPPER`.
