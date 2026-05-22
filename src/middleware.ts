@@ -27,7 +27,7 @@
 
 //   if (pathname.startsWith("/backend") && !isAdmin) {
 //     const deniedUrl = request.nextUrl.clone();
-//     deniedUrl.pathname = "/frontend";
+//     deniedUrl.pathname = "/\";
 //     return NextResponse.redirect(deniedUrl);
 //   }
 

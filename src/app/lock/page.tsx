@@ -63,6 +63,8 @@ export default function Lock() {
           router.push(data.redirectTo ?? "/menus");
         }, 800);
       } else {
+
+        alert("တကယ့် Error က: " + data.message);
         setIsSuccess(false);
         setIsError(true); // မှားယွင်းကြောင်း Animation ပြရန်
 
