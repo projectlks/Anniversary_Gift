@@ -41,7 +41,7 @@ export async function createJourneyEntryAction(formData: FormData) {
   });
 
   revalidatePath(`/backend/journey?coupleId=${coupleId}`);
-  revalidatePath("/frontend/journey");
+  revalidatePath("/journey");
 }
 
 export async function updateJourneyEntryAction(formData: FormData) {
@@ -76,7 +76,7 @@ export async function updateJourneyEntryAction(formData: FormData) {
   });
 
   revalidatePath(`/backend/journey?coupleId=${coupleId}`);
-  revalidatePath("/frontend/journey");
+  revalidatePath("/journey");
 }
 
 export async function deleteJourneyEntryAction(formData: FormData) {
@@ -96,5 +96,5 @@ export async function deleteJourneyEntryAction(formData: FormData) {
   });
 
   revalidatePath(`/backend/journey?coupleId=${coupleId}`);
-  revalidatePath("/frontend/journey");
+  revalidatePath("/journey");
 }

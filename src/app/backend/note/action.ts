@@ -53,5 +53,5 @@ export async function saveLoveNoteAction(formData: FormData) {
   });
 
   revalidatePath(`/backend/note?coupleId=${coupleId}`);
-  revalidatePath("/frontend/note");
+  revalidatePath("/note");
 }

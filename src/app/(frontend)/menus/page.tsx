@@ -461,7 +461,7 @@ export default function Menus() {
         <main className="container mx-auto space-y-10 p-4 pt-10 md:p-10">
           <div className="frontend-menu-fade-in-up max-w-2xl">
             <p className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-blue-600">
-              Private frontend
+              Private 
             </p>
             <h2 className="mb-4 text-3xl font-bold tracking-tight text-gray-900 md:text-4xl lg:text-[40px]">
               Menu of Our Love

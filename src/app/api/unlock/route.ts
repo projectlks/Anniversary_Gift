@@ -41,7 +41,7 @@ export async function POST(req: Request) {
     entityId: membership.coupleId,
   });
 
-  const res = NextResponse.json({ success: true, redirectTo: "/frontend" });
+  const res = NextResponse.json({ success: true, redirectTo: "/menus" });
   res.cookies.set("unlockedCoupleId", membership.coupleId, {
     httpOnly: true,
     path: "/",
