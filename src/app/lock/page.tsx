@@ -64,7 +64,7 @@ export default function Lock() {
         }, 800);
       } else {
 
-        alert("တကယ့် Error က: " + data.message);
+        // alert("တကယ့် Error က: " + data.message);
         setIsSuccess(false);
         setIsError(true); // မှားယွင်းကြောင်း Animation ပြရန်
 

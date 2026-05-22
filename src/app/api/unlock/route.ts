@@ -6,18 +6,21 @@ import { verifyPasscode } from "@/libs/security";
 
 export async function POST(req: Request) {
   const session = await auth();
-  if (!session?.user?.id) {
+  // if (!session?.user?.id) {
+  //   return NextResponse.json({ success: false, message: "Unauthorized" }, { status: 401 });
+  // }
+
+  if (!session?.user?.email) {
     return NextResponse.json({ success: false, message: "Unauthorized" }, { status: 401 });
   }
-
   const { passcode } = (await req.json()) as { passcode?: unknown };
   const submittedPasscode = typeof passcode === "string" ? passcode.trim() : "";
   if (!submittedPasscode) {
     return NextResponse.json({ success: false, message: "Passcode is required" }, { status: 400 });
   }
 
-  const membership = await prisma.coupleMember.findUnique({
-    where: { userId: session.user.id },
+  const membership = await prisma.coupleMember.findFirst({
+    where: { email: session.user.email },
     include: { couple: true },
   });
 
