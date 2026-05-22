@@ -1,0 +1,21 @@
+{
+  "name": "Our Anniversary Space",
+  "short_name": "Our Space",
+  "description": "A private space for our beautiful memories",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#080305",
+  "theme_color": "#f43f5e",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

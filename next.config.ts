@@ -1,5 +1,12 @@
 import type { NextConfig } from "next";
 
+import withPWAInit from "@ducanh2912/next-pwa";
+
+const withPWA = withPWAInit({
+  dest: "public",
+  disable: process.env.NODE_ENV === "development", // 🌟 Dev run နေချိန်မှာ PWA မပွင့်အောင် ပိတ်ထားမည် (Error ကင်းစေရန်)
+});
+
 const nextConfig: NextConfig = {
   experimental: {
     serverActions: {
@@ -32,4 +39,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withPWA(nextConfig);

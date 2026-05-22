@@ -59,6 +59,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Anniversary Gift", // Title ကို ပြင်ပေးထားပါတယ်
   description: "A private romantic experience", // Description ကို ပြင်ပေးထားပါတယ်
+  manifest: "/manifest.json", // 🌟 ဒီစာကြောင်းလေးကို အသစ် သွားထည့်ပေးပါ
 };
 
 export default function RootLayout({
