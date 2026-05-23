@@ -1,19 +1,18 @@
 import DomeGallery from "@/app/page/DomeGallery";
 import { getAllImages } from "@/libs/action";
 
-export const dynamic = "force-dynamic";
+// ❌ အရင်က Data တွေကို အတင်း အသစ်ပြန်ဆွဲခိုင်းနေတဲ့ စာကြောင်းကို ဖြုတ်လိုက်ပါပြီ
+// export const dynamic = "force-dynamic";
 
 export default async function DomeGalleryPage() {
+  // 🌟 Next.js က ဒီ Function ကို တစ်ခါပဲ Run ပြီး ရလာတဲ့ Data ကို အလိုလို မှတ်ထားပေးပါလိမ့်မယ်
   const images = (await getAllImages()).map((image, index) => ({
     src: image.imgUrl,
     alt: `Couple memory ${index + 1}`,
   }));
 
   return (
-    <div className="relative bg-black w-full  h-screen" >
-
-    
-
+    <div className="relative bg-black w-full  h-screen">
       {images.length ? (
         <DomeGallery
           images={images}
@@ -38,4 +37,3 @@ export default async function DomeGalleryPage() {
     </div>
   );
 }
-

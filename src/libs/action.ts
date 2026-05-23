@@ -67,15 +67,25 @@ export async function uploadUserImageAction(fileData: FormData) {
       throw new Error("သင်သည် စုံတွဲအကောင့်ထဲတွင် မရှိသေးပါ။");
     }
 
-    // ၂။ ယူဆာ၏ ကိုယ်ပိုင် coupleId ကိုသာ အသုံးပြု၍ Admin ၏ Upload Function ကို ပြန်ခေါ်ခြင်း
-    // (uploadMemoryImageFile သည် အစ်ကို အရင်ကတည်းက ရေးထားပြီးသား Function ဖြစ်သည်)
-    return await uploadMemoryImageFile(fileData, viewer.coupleId);
+    // ၂။ ပုံကို Database နှင့် Storage ထဲသို့ အရင် သိမ်းပါမည် 
+    const savedImage = await uploadMemoryImageFile(fileData, viewer.coupleId);
+
+    // 🌟 ၃။ ပုံသိမ်းတာ အောင်မြင်သွားမှသာ Cache တွေကို အသစ်ပြန်ဆွဲခိုင်းပါမည်
+    if (savedImage) {
+      revalidatePath("/memories");
+      revalidatePath("/puzzle");
+      revalidatePath("/dome-gallary");
+      revalidatePath("/mouse-image");
+    }
+
+    // ၄။ ပြီးမှ Data ကို Return ပြန်ပေးပါမည်
+    return savedImage;
+
   } catch (error) {
     console.error("User upload error:", error);
     return null;
   }
 }
-
 function hasImageExtension(fileName: string) {
   return /\.(avif|gif|jpe?g|png|webp)$/i.test(fileName);
 }
@@ -327,6 +337,7 @@ export async function getTotalCounts() {
 
 
 import { startOfDay, differenceInDays } from "date-fns";
+import { revalidatePath } from "next/cache";
 
 // ... (အခြား import များနှင့် function များ)
 

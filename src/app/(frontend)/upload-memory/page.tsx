@@ -1,132 +1,7 @@
-// "use client";
-
-// import { useState } from "react";
-// import { useRouter } from "next/navigation";
-// import imageCompression from "browser-image-compression";
-// import ImageUpload from "@/components/ImageUpload";
-// // သက်ဆိုင်ရာ action.ts မှ Import လုပ်ပါ (လမ်းကြောင်း မှန်အောင် ပြင်ပေးပါ)
-// import { uploadUserImageAction } from "@/libs/action";
-
-// export default function UserUploadPage() {
-//   const router = useRouter();
-//   const [error, setError] = useState<string | null>(null);
-//   const [saving, setSaving] = useState(false);
-//   const [success, setSuccess] = useState(false);
-
-//   const handleFileSelected = async (file: File) => {
-//     setSaving(true);
-//     setError(null);
-//     setSuccess(false);
-
-//     try {
-//       // 🌟 ၁။ ဖုန်းကင်မရာ ပုံကြီးများကို 1.5MB အောက်ရောက်အောင် အလိုလို ချုံ့ပါမည်
-//       const options = {
-//         maxSizeMB: 1.5,
-//         maxWidthOrHeight: 1920,
-//         useWebWorker: true,
-//       };
-//       const compressedFile = await imageCompression(file, options);
-
-//       // 🌟 ၂။ ချုံ့ပြီးသားပုံကို Backend သို့ ပို့ပါမည်
-//       const formData = new FormData();
-//       formData.append("file", compressedFile, compressedFile.name);
-
-//       const savedImage = await uploadUserImageAction(formData);
-
-//       if (!savedImage) {
-//         setError("ပုံကို သိမ်းဆည်း၍ မရနိုင်ပါ။ ထပ်မံကြိုးစားကြည့်ပါ။");
-//         return;
-//       }
-
-//       setSuccess(true);
-
-//       // ပုံတင်ပြီးသွားလျှင် Gallery (Memories) သို့ (၃) စက္ကန့်အကြာတွင် အလိုလို ပြန်သွားမည်
-//       setTimeout(() => {
-//         router.push("/memories");
-//       }, 3000);
-//     } catch (err) {
-//       const message =
-//         err instanceof Error ? err.message : "တစ်ခုခုမှားယွင်းသွားပါပြီ။";
-//       setError(message);
-//     } finally {
-//       setSaving(false);
-//     }
-//   };
-
-//   return (
-//     <div className="min-h-screen bg-[#F8FAFC] py-12 px-4 sm:px-6 lg:px-8">
-//       <div className="mx-auto max-w-md">
-//         <div className="mb-8 text-center">
-//           <h2 className="text-3xl font-bold tracking-tight text-gray-900">
-//             Upload Memories
-//           </h2>
-//           <p className="mt-2 text-sm text-gray-500">
-//             ငါတို့နှစ်ယောက်ရဲ့ အမှတ်တရ ပုံရိပ်လေးတွေကို ဒီမှာ လုံခြုံစွာ
-//             သိမ်းဆည်းလိုက်ပါ။
-//           </p>
-//         </div>
-
-//         <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-//           {!success ? (
-//             <>
-//               <ImageUpload
-//                 onFileSelected={handleFileSelected}
-//                 disabled={saving}
-//                 buttonText={
-//                   saving
-//                     ? "ချုံ့ပြီး သိမ်းဆည်းနေပါသည်..."
-//                     : "ပုံအသစ်ရွေးချယ်မည်"
-//                 }
-//                 className="w-full justify-center bg-pink-500 text-white hover:bg-pink-600"
-//               />
-//               {error && (
-//                 <p className="mt-4 rounded-lg bg-red-50 p-3 text-center text-sm font-medium text-red-600 ring-1 ring-red-100">
-//                   {error}
-//                 </p>
-//               )}
-//             </>
-//           ) : (
-//             <div className="text-center py-6">
-//               <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mb-4">
-//                 <svg
-//                   className="h-6 w-6 text-green-600"
-//                   fill="none"
-//                   viewBox="0 0 24 24"
-//                   strokeWidth="2"
-//                   stroke="currentColor">
-//                   <path
-//                     strokeLinecap="round"
-//                     strokeLinejoin="round"
-//                     d="M5 13l4 4L19 7"
-//                   />
-//                 </svg>
-//               </div>
-//               <h3 className="text-lg font-medium text-gray-900">
-//                 အောင်မြင်စွာ တင်ပြီးပါပြီ!
-//               </h3>
-//               <p className="mt-2 text-sm text-gray-500">
-//                 Gallery သို့ ခဏနေလျှင် ရောက်သွားပါမည်...
-//               </p>
-//             </div>
-//           )}
-//         </div>
-
-//         <button
-//           onClick={() => router.back()}
-//           className="mt-6 w-full text-center text-sm font-medium text-gray-500 hover:text-gray-900">
-//           &larr; နောက်သို့ ပြန်သွားမည်
-//         </button>
-//       </div>
-//     </div>
-//   );
-// }
 "use client";
 
 import { useState, DragEvent } from "react";
 import imageCompression from "browser-image-compression";
-// import { uploadUserImageAction } from "./action";
-// ArrowUpTrayIcon လေးသုံးဖို့ @heroicons/react သွင်းထားဖို့လိုပါတယ်
-// npm install @heroicons/react
 import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
 import { uploadUserImageAction } from "@/libs/action";
 
@@ -202,9 +77,6 @@ export default function UserUploadPage() {
       {/* 🌟 image_0.png ထဲကအတိုင်း Card Container ပုံစံ */}
       <div className="w-full max-w-2xl overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
         {/* Card Header - Dropzone */}
-        {/* <div className="border-b border-gray-100 px-6 py-4">
-          <h1 className="text-xl font-semibold text-gray-900">Dropzone</h1>
-        </div> */}
 
         {/* Card Body */}
         <div className="p-6">
@@ -228,6 +100,16 @@ export default function UserUploadPage() {
               <h3 className="text-lg font-medium text-gray-900">
                 အောင်မြင်စွာ တင်ပြီးပါပြီ!
               </h3>
+
+              {/* 🌟 နောက်ထပ်ပုံ ထပ်တင်ရန် ခလုတ် (အသစ်ထည့်ထားသည်) */}
+              <button
+                onClick={() => {
+                  setSuccess(false);
+                  setError(null);
+                }}
+                className="rounded-lg mt-5 bg-green-600 px-6 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                နောက်ထပ်ပုံ ထပ်တင်မည်
+              </button>
             </div>
           )}
 

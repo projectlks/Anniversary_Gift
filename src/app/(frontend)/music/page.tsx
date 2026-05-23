@@ -16,7 +16,7 @@ import { getAllImages, getMusicTracks } from "@/libs/action";
 import { resolveCoupleScope } from "@/libs/authz";
 import MusicRoom from "./MusicRoom";
 
-export const dynamic = "force-dynamic";
+// export const dynamic = "force-dynamic";
 
 export default async function MusicPage() {
   const { couple } = await resolveCoupleScope();

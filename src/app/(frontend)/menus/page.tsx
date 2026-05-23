@@ -4,6 +4,7 @@
 // import { useEffect, useState } from "react";
 // import { useRouter } from "next/navigation";
 // import { signOut } from "next-auth/react";
+// import Link from "next/link"; // 🌟 အပေါ်ဆုံးမှာ ဒါလေး ထည့်ပါ
 // import {
 //   ArrowRightOnRectangleIcon,
 //   CalendarDaysIcon,
@@ -15,6 +16,7 @@
 //   PhotoIcon,
 //   PuzzlePieceIcon,
 //   Squares2X2Icon,
+//   SparklesIcon, // 🌟 Mouse Trail Menu အတွက် Icon အသစ် ထည့်ထားပါသည်
 // } from "@heroicons/react/24/outline";
 
 // type MenuCard = {
@@ -72,12 +74,21 @@
 //     icon: <MusicalNoteIcon className="h-12 w-12" strokeWidth={1.5} />,
 //     delay: "0.6s",
 //   },
+//   // 🌟 Mouse Image Trail အတွက် Menu အသစ်
+//   {
+//     title: "Magic Trail",
+//     description:
+//       "Watch your favorite photos follow your cursor in a magical trail.",
+//     href: "/mouse-image", // 🌟 အစ်ကို လိုချင်တဲ့ Route နာမည် ပြင်နိုင်ပါသည်
+//     icon: <SparklesIcon className="h-12 w-12" strokeWidth={1.5} />,
+//     delay: "0.7s",
+//   },
 //   {
 //     title: "Upload Memories",
 //     description: "Add new photos to your shared space securely.",
 //     href: "/upload-memory",
 //     icon: <CloudArrowUpIcon className="h-12 w-12" strokeWidth={1.5} />,
-//     delay: "0.7s",
+//     delay: "0.8s",
 //   },
 // ];
 
@@ -85,6 +96,8 @@
 //   const router = useRouter();
 //   const [isLoggingOut, setIsLoggingOut] = useState(false);
 //   const [currentDate, setCurrentDate] = useState("");
+
+//   const [loadingRoute, setLoadingRoute] = useState<string | null>(null);
 
 //   useEffect(() => {
 //     const date = new Date().toLocaleDateString("en-US", {
@@ -106,6 +119,11 @@
 //     }
 //   };
 
+//   const handleNavigation = (href: string) => {
+//     setLoadingRoute(href);
+//     router.push(href);
+//   };
+
 //   return (
 //     <>
 //       <style
@@ -122,6 +140,14 @@
 //           `,
 //         }}
 //       />
+
+//       {/* 🌟 အရေးကြီး: Loading ဖြစ်နေချိန် တစ်မျက်နှာလုံးကို Block လုပ်မည့် နေရာ */}
+//       {loadingRoute && (
+//         <div
+//           className="fixed inset-0 z-[100] cursor-wait bg-transparent"
+//           aria-hidden="true"
+//         />
+//       )}
 
 //       <div className="min-h-screen bg-[#F8FAFC] font-sans text-gray-500">
 //         <header className="sticky top-0 z-40 flex w-full border-b border-gray-200 bg-white/80 backdrop-blur-md">
@@ -146,7 +172,7 @@
 //               <button
 //                 type="button"
 //                 onClick={handleLogout}
-//                 disabled={isLoggingOut}
+//                 disabled={isLoggingOut || !!loadingRoute} // 🌟 Loading နေချိန် Logout ကိုပါ ပိတ်ထားပါမည်
 //                 className="flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-semibold text-red-600 transition-all hover:bg-red-600 hover:text-white disabled:cursor-not-allowed disabled:opacity-50">
 //                 {isLoggingOut ? (
 //                   <svg
@@ -186,7 +212,7 @@
 //         <main className="container mx-auto space-y-10 p-4 pt-10 md:p-10">
 //           <div className="frontend-menu-fade-in-up max-w-2xl">
 //             <p className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-blue-600">
-//               Private frontend
+//               Private
 //             </p>
 //             <h2 className="mb-4 text-3xl font-bold tracking-tight text-gray-900 md:text-4xl lg:text-[40px]">
 //               Menu of Our Love
@@ -205,7 +231,9 @@
 //                 description={card.description}
 //                 icon={card.icon}
 //                 delay={card.delay}
-//                 onClick={() => router.push(card.href)}
+//                 isLoading={loadingRoute === card.href}
+//                 isGlobalLoading={!!loadingRoute} // 🌟 အခြား Card များကိုပါ Disable လုပ်ရန် Props ပို့ပါမည်
+//                 onClick={() => handleNavigation(card.href)}
 //               />
 //             ))}
 //           </div>
@@ -214,27 +242,65 @@
 //     </>
 //   );
 // }
+
 // function MenuDashboardCard({
 //   title,
 //   description,
 //   icon,
 //   onClick,
+//   isLoading,
+//   isGlobalLoading,
 //   delay = "0s",
 // }: {
 //   title: string;
 //   description: string;
 //   icon: React.ReactNode;
 //   onClick: () => void;
+//   isLoading?: boolean;
+//   isGlobalLoading?: boolean;
 //   delay?: string;
 // }) {
 //   return (
 //     <button
 //       type="button"
 //       onClick={onClick}
-//       className="frontend-menu-fade-in-up group h-full cursor-pointer text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2"
+//       disabled={isGlobalLoading} // 🌟 တစ်ခုခု Loading ဖြစ်နေရင် အကုန်လုံးကို ပိတ်ထားပါမည်
+//       className={`frontend-menu-fade-in-up group h-full text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2 ${
+//         isLoading
+//           ? "cursor-wait"
+//           : isGlobalLoading
+//             ? "cursor-not-allowed opacity-80"
+//             : "cursor-pointer"
+//       }`}
 //       style={{ animationDelay: delay, animationFillMode: "both" }}>
-//       <div className="h-full rounded-3xl border border-gray-200 bg-gray-50 p-1 duration-200 group-hover:border-pink-300 group-hover:bg-pink-50 md:p-2">
-//         <div className="flex h-full min-h-[260px] flex-col rounded-2xl border border-[#F2F4F7] bg-white p-4 md:p-6">
+//       <div
+//         className={`h-full rounded-3xl border border-gray-200 bg-gray-50 p-1 duration-200 ${!isGlobalLoading && "group-hover:border-pink-300 group-hover:bg-pink-50"} md:p-2`}>
+//         <div className="relative flex h-full min-h-[260px] flex-col rounded-2xl border border-[#F2F4F7] bg-white p-4 md:p-6 overflow-hidden">
+//           {isLoading && (
+//             <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white/70 backdrop-blur-[2px] rounded-2xl transition-all">
+//               <svg
+//                 className="h-8 w-8 animate-spin text-pink-500 mb-3"
+//                 xmlns="http://www.w3.org/2000/svg"
+//                 fill="none"
+//                 viewBox="0 0 24 24">
+//                 <circle
+//                   className="opacity-25"
+//                   cx="12"
+//                   cy="12"
+//                   r="10"
+//                   stroke="currentColor"
+//                   strokeWidth="4"></circle>
+//                 <path
+//                   className="opacity-75"
+//                   fill="currentColor"
+//                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+//               </svg>
+//               <span className="text-sm font-bold text-pink-600 animate-pulse tracking-wide">
+//                 Opening...
+//               </span>
+//             </div>
+//           )}
+
 //           <div className="mb-7 text-pink-600">{icon}</div>
 //           <h3 className="mb-4 text-xl font-semibold text-gray-900 md:text-2xl xl:text-xl">
 //             {title}
@@ -265,7 +331,7 @@ import {
   PhotoIcon,
   PuzzlePieceIcon,
   Squares2X2Icon,
-  SparklesIcon, // 🌟 Mouse Trail Menu အတွက် Icon အသစ် ထည့်ထားပါသည်
+  SparklesIcon,
 } from "@heroicons/react/24/outline";
 
 type MenuCard = {
@@ -323,12 +389,11 @@ const menuCards: MenuCard[] = [
     icon: <MusicalNoteIcon className="h-12 w-12" strokeWidth={1.5} />,
     delay: "0.6s",
   },
-  // 🌟 Mouse Image Trail အတွက် Menu အသစ်
   {
     title: "Magic Trail",
     description:
       "Watch your favorite photos follow your cursor in a magical trail.",
-    href: "/mouse-image", // 🌟 အစ်ကို လိုချင်တဲ့ Route နာမည် ပြင်နိုင်ပါသည်
+    href: "/mouse-image",
     icon: <SparklesIcon className="h-12 w-12" strokeWidth={1.5} />,
     delay: "0.7s",
   },
@@ -345,7 +410,6 @@ export default function Menus() {
   const router = useRouter();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [currentDate, setCurrentDate] = useState("");
-
   const [loadingRoute, setLoadingRoute] = useState<string | null>(null);
 
   useEffect(() => {
@@ -390,7 +454,6 @@ export default function Menus() {
         }}
       />
 
-      {/* 🌟 အရေးကြီး: Loading ဖြစ်နေချိန် တစ်မျက်နှာလုံးကို Block လုပ်မည့် နေရာ */}
       {loadingRoute && (
         <div
           className="fixed inset-0 z-[100] cursor-wait bg-transparent"
@@ -421,7 +484,7 @@ export default function Menus() {
               <button
                 type="button"
                 onClick={handleLogout}
-                disabled={isLoggingOut || !!loadingRoute} // 🌟 Loading နေချိန် Logout ကိုပါ ပိတ်ထားပါမည်
+                disabled={isLoggingOut || !!loadingRoute}
                 className="flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-semibold text-red-600 transition-all hover:bg-red-600 hover:text-white disabled:cursor-not-allowed disabled:opacity-50">
                 {isLoggingOut ? (
                   <svg
@@ -461,7 +524,7 @@ export default function Menus() {
         <main className="container mx-auto space-y-10 p-4 pt-10 md:p-10">
           <div className="frontend-menu-fade-in-up max-w-2xl">
             <p className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-blue-600">
-              Private 
+              Private
             </p>
             <h2 className="mb-4 text-3xl font-bold tracking-tight text-gray-900 md:text-4xl lg:text-[40px]">
               Menu of Our Love
@@ -480,8 +543,9 @@ export default function Menus() {
                 description={card.description}
                 icon={card.icon}
                 delay={card.delay}
+                href={card.href} // 🌟 ဖြည့်စွက်ထားသည်
                 isLoading={loadingRoute === card.href}
-                isGlobalLoading={!!loadingRoute} // 🌟 အခြား Card များကိုပါ Disable လုပ်ရန် Props ပို့ပါမည်
+                isGlobalLoading={!!loadingRoute}
                 onClick={() => handleNavigation(card.href)}
               />
             ))}
@@ -500,6 +564,7 @@ function MenuDashboardCard({
   isLoading,
   isGlobalLoading,
   delay = "0s",
+  href, // 🌟 ဖြည့်စွက်ထားသည်
 }: {
   title: string;
   description: string;
@@ -508,12 +573,20 @@ function MenuDashboardCard({
   isLoading?: boolean;
   isGlobalLoading?: boolean;
   delay?: string;
+  href: string; // 🌟 ဖြည့်စွက်ထားသည်
 }) {
+  const router = useRouter(); // 🌟 Next.js Router ကို ခေါ်ယူသည်
+
+  // 🌟 Component ပေါ်လာတာနဲ့ နောက်ကွယ်ကနေ Loading ကြိုဆွဲထားပေးမည့် အပိုင်း
+  useEffect(() => {
+    router.prefetch(href);
+  }, [router, href]);
+
   return (
     <button
       type="button"
       onClick={onClick}
-      disabled={isGlobalLoading} // 🌟 တစ်ခုခု Loading ဖြစ်နေရင် အကုန်လုံးကို ပိတ်ထားပါမည်
+      disabled={isGlobalLoading}
       className={`frontend-menu-fade-in-up group h-full text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2 ${
         isLoading
           ? "cursor-wait"

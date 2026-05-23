@@ -1,27 +1,8 @@
-// // export const dynamic = "force-dynamic";
-
-// import { DragCards } from "@/components/DragCards";
-// import { getAllImages } from "@/libs/action";
-// // export const revalidate = 60
-// export const revalidate = 0
-// interface ImageType {
-//   imgUrl: string;
-// }
-
-// export const runtime = "nodejs"; // ✅ ADD HERE
-
-// export default async function Memories() {
-//   const images = (await getAllImages()).map((image: ImageType) => ({
-//     src: image.imgUrl,
-//   }));
-
-//   return <DragCards images={images} />;
-// }
 import { DragCards } from "@/components/DragCards";
 import { getAllImages } from "@/libs/action";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+// export const dynamic = "force-dynamic";
+// export const revalidate = 0;
 
 // 🌟 ပြင်ဆင်ချက် ၁: url အစား imgUrl လို့ ပြန်ပြောင်းပေးပါမည်
 interface ImageType {
