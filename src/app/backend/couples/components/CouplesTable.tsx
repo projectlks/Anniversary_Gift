@@ -121,9 +121,7 @@ export default function CouplesTable({ couples }: CouplesTableProps) {
                     </span>{" "}
                     Img
                     <span className="mx-1 text-gray-300">/</span>
-                    <span className="font-semibold text-gray-800 dark:text-white/80">
-                      {couple.maxPuzzleImages}
-                    </span>{" "}
+                  
                     Pzl
                   </p>
                 </td>

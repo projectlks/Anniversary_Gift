@@ -103,15 +103,7 @@ export default function ManageCoupleModal({
               className={inputClass}
             />
           </div>
-          <div className="w-1/2">
-            <label className="mb-1 block text-xs">Puzzles</label>
-            <input
-              name="maxPuzzleImages"
-              type="number"
-              defaultValue={couple.maxPuzzleImages}
-              className={inputClass}
-            />
-          </div>
+      
           <button className="h-10.5 rounded-lg bg-gray-900 px-6 text-sm font-medium text-white transition hover:bg-gray-800 dark:bg-blue-600 dark:hover:bg-blue-700">
             Save
           </button>
