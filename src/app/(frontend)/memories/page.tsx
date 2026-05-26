@@ -19,7 +19,7 @@ export default async function Memories() {
 
   if (!images || images.length === 0) {
     return (
-      <div className="flex h-screen w-full items-center justify-center bg-stone-900 text-stone-400">
+      <div className="flex h-screen w-full items-center justify-center bg-white text-stone-400">
         <p className="text-lg">No memories yet. Upload some photos!</p>
       </div>
     );

@@ -104,7 +104,7 @@ const getResponsiveCardSize = (
 
 export const DragCards = ({ images }: DragCardsProps) => {
   return (
-    <section className="relative grid min-h-dvh w-full place-content-center overflow-hidden bg-neutral-950">
+    <section className="relative grid min-h-dvh w-full place-content-center overflow-hidden bg-white">
       <h2 className="relative z-0 text-[22vw] font-black text-neutral-800 md:text-[200px]">
         LOVE<span className="text-[#ffafcc]">.</span>
       </h2>

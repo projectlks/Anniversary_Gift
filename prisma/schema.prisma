@@ -83,7 +83,6 @@
 //   @@unique([userId])
 // }
 
-
 // // 🌟 သီချင်းများ သိမ်းဆည်းရန် Table အသစ်
 // model MusicTrack {
 //   id          String   @id @default(cuid())
@@ -204,7 +203,6 @@
 //   @@unique([identifier, token])
 // }
 
-
 generator client {
   provider      = "prisma-client-js"
   binaryTargets = ["native", "rhel-openssl-3.0.x"]
@@ -251,24 +249,46 @@ model User {
 }
 
 model Couple {
-  id              String           @id @default(cuid())
-  name            String
-  slug            String           @unique
-  passcodeHash    String
-  startDate       DateTime?
-  maxMemories     Int              @default(120)
-  maxPuzzleImages Int              @default(30)
-  isArchived      Boolean          @default(false)
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
-  members         CoupleMember[]
-  clickCounter    ClickCountTable?
-  uploadedImages  UploadedImage[]
-  puzzleImages    PuzzleImages[]
-  loveNotes       LoveNote[]
-  journeyEntries  JourneyEntry[]
-  auditLogs       AuditLog[]
-  musicTracks     MusicTrack[]     // 🌟 MusicTrack အတွက် Relation အသစ်
+  id             String           @id @default(cuid())
+  name           String
+  slug           String           @unique
+  passcodeHash   String
+  startDate      DateTime?
+  maxMemories    Int              @default(120)
+  // maxPuzzleImages Int              @default(30)
+  isArchived     Boolean          @default(false)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  members        CoupleMember[]
+  clickCounter   ClickCountTable?
+  uploadedImages UploadedImage[]
+  puzzleImages   PuzzleImages[]
+  loveNotes      LoveNote[]
+  journeyEntries JourneyEntry[]
+  auditLogs      AuditLog[]
+  musicTracks    MusicTrack[] // 🌟 MusicTrack အတွက် Relation အသစ်
+  shortNotes     ShortNote[] // 🌟 ဒါလေး အသစ် တိုးလိုက်ပါ
+
+  // 🌟 ဒါလေး အသစ် တိုးလိုက်ပါ (Video မတင်ရသေးတဲ့ စုံတွဲတွေအတွက် ? ခံထားပေးပါ)
+  surpriseVideoUrl String?
+  secretNote       String? // ဗီဒီယိုပြီးမှ ပေါ်မည့်စာ
+  surpriseMessage  String? // 🌟 စာရိုက်ပြမည့်စာ (အသစ်တိုးရန်)
+}
+
+// 🌟 [New] Figma-style Short Notes များ သိမ်းဆည်းရန်
+model ShortNote {
+  id        String   @id @default(cuid())
+  coupleId  String
+  content   String // စာသား
+  color     String   @default("bg-[#FFF3A3]") // Sticky Note အရောင်
+  x         Float    @default(0) // ဘယ်ဘက်ကနေ ဘယ်လောက်ကွာလဲ
+  y         Float    @default(0) // အပေါ်ကနေ ဘယ်လောက်ကွာလဲ
+  reactions String   @default("") // 🌟 ဤလိုင်းလေး အသစ်တိုးပေးပါ
+  createdAt DateTime @default(now())
+
+  couple Couple @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+
+  @@index([coupleId])
 }
 
 model CoupleMember {
@@ -302,28 +322,26 @@ model CoupleMember {
 //   @@index([coupleId]) // 🌟 [New Index]
 // }
 
-
 model ClickCountTable {
-  id              Int      @id @default(autoincrement())
-  coupleId        String?  @unique
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  
+  id        Int      @id @default(autoincrement())
+  coupleId  String?  @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   // 🌟 ယခင်က ရိုးရိုး Click စနစ်
-  count           Int      @default(0)
-  
+  count Int @default(0)
+
   // 🔥 [အသစ်] Stack (Streak) စနစ်အတွက် Fields များ
-  stackCount      Int      @default(0)       // လက်ရှိ စုဆောင်းမိသော Stack အရေအတွက်
-  
-  ownerLastClick   DateTime?                  // Owner (ကောင်လေး) နောက်ဆုံးနှိပ်ခဲ့သော အချိန်
-  partnerLastClick DateTime?                  // Partner (ကောင်မလေး) နောက်ဆုံးနှိပ်ခဲ့သော အချိန်
-  lastStackDate    DateTime?                  // (၂) ယောက်လုံးနှိပ်မိ၍ Stack တက်သွားသော နောက်ဆုံးရက် (Date Only)
-  
-  couple          Couple?  @relation(fields: [coupleId], references: [id], onDelete: SetNull)
+  stackCount Int @default(0) // လက်ရှိ စုဆောင်းမိသော Stack အရေအတွက်
+
+  ownerLastClick   DateTime? // Owner (ကောင်လေး) နောက်ဆုံးနှိပ်ခဲ့သော အချိန်
+  partnerLastClick DateTime? // Partner (ကောင်မလေး) နောက်ဆုံးနှိပ်ခဲ့သော အချိန်
+  lastStackDate    DateTime? // (၂) ယောက်လုံးနှိပ်မိ၍ Stack တက်သွားသော နောက်ဆုံးရက် (Date Only)
+
+  couple Couple? @relation(fields: [coupleId], references: [id], onDelete: SetNull)
 
   @@index([coupleId])
 }
-
 
 model UploadedImage {
   id          Int      @id @default(autoincrement())
@@ -403,32 +421,32 @@ model AuditLog {
 
 // 🌟 [New] သီချင်းများ သိမ်းဆည်းရန် Table အသစ်
 model MusicTrack {
-  id          String   @id @default(cuid())
-  coupleId    String?
-  name        String
-  url         String
-  addedAt     DateTime @default(now())
-  couple      Couple?  @relation(fields: [coupleId], references: [id], onDelete: Cascade)
+  id       String   @id @default(cuid())
+  coupleId String?
+  name     String
+  url      String
+  addedAt  DateTime @default(now())
+  couple   Couple?  @relation(fields: [coupleId], references: [id], onDelete: Cascade)
 
   @@index([coupleId, addedAt]) // 🌟 [New Index]
 }
 
 model Account {
-  id                String  @id @default(cuid())
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String? @db.Text
-  session_state     String?
+  id                       String  @id @default(cuid())
+  userId                   String
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token            String? @db.Text
+  access_token             String? @db.Text
+  expires_at               Int?
+  token_type               String?
+  scope                    String?
+  id_token                 String? @db.Text
+  session_state            String?
   refresh_token_expires_in Int?
-  
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
   @@index([userId]) // 🌟 [New Index]

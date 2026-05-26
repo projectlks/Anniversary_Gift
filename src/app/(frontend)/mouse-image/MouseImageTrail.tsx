@@ -1,7 +1,7 @@
 "use client";
 
 import { useAnimate } from "motion/react";
-import React, { MouseEventHandler, ReactNode, useRef } from "react";
+import  { MouseEventHandler, ReactNode, useRef } from "react";
 
 export default function MouseImageTrail({
   children,
@@ -89,7 +89,8 @@ export default function MouseImageTrail({
       {
         opacity: [1, 0],
       },
-      { ease: "linear", duration: 0.5, delay: 5 },
+      // { ease: "linear", duration: 0.5, delay: 5 },
+      { ease: "linear", duration: 2, delay: 8 },
     );
 
     imageRenderCount.current = imageRenderCount.current + 1;
@@ -110,6 +111,15 @@ export default function MouseImageTrail({
           key={index}
           data-mouse-move-index={index}
         />
+
+        // <Image
+        //   className="pointer-events-none absolute left-0 top-0 h-48 w-auto rounded-xl border-2 border-black bg-neutral-900 object-cover opacity-0"
+        //   src={img}
+        //   alt={`Mouse move image ${index}`}
+        //   key={index}
+        //   data-mouse-move-index={index}
+        //   objectFit="cover"
+        // />
       ))}
     </div>
   );

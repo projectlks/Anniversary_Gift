@@ -22,7 +22,7 @@
     "browser-image-compression": "^2.0.2",
     "canvas-confetti": "^1.9.4",
     "date-fns": "^4.2.1",
-    "framer-motion": "^12.39.0",
+    "framer-motion": "^12.40.0",
     "googleapis": "^172.0.0",
     "lottie-react": "^2.4.1",
     "motion": "^12.40.0",
@@ -30,13 +30,16 @@
     "next-auth": "^4.24.14",
     "nodemailer": "^7.0.13",
     "postcss": "^8.5.10",
+    "pusher": "^5.3.3",
+    "pusher-js": "^8.5.0",
     "qrcode": "^1.5.4",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "react-dropzone": "^15.0.0",
     "react-icons": "^5.6.0",
     "react-player": "^3.4.0",
-    "tailwind-merge": "^3.5.0"
+    "tailwind-merge": "^3.5.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.5",
