@@ -573,14 +573,9 @@ export async function uploadPuzzleImageFile(
     throw new Error("FORBIDDEN");
   }
 
-  const currentCount = await prisma.puzzleImages.count({
-    where: { coupleId: couple.id, isArchived: false },
-  });
 
-  if (currentCount >= couple.maxPuzzleImages) {
-    throw new Error("Puzzle image limit reached for this couple.");
-  }
 
+ 
   const upload = await uploadCoupleFileToDrive({
     coupleId: couple.id,
     fileData,
