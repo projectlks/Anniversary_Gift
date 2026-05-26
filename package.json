@@ -18,7 +18,9 @@
     "@shadcn/ui": "^0.0.4",
     "@use-gesture/react": "^10.3.1",
     "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
     "browser-image-compression": "^2.0.2",
+    "canvas-confetti": "^1.9.4",
     "date-fns": "^4.2.1",
     "framer-motion": "^12.39.0",
     "googleapis": "^172.0.0",
@@ -39,6 +41,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.5",
     "@tailwindcss/postcss": "^4.2.2",
+    "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^25.6.0",
     "@types/nodemailer": "^8.0.0",
     "@types/qrcode": "^1.5.6",

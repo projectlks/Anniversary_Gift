@@ -46,6 +46,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Image from "next/image";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -72,7 +73,8 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} scrollbar-hide antialiased`}>
-          <Analytics /> {/* Vercel Analytics ကို ထည့်သွင်းထားပါတယ် */}
+        <SpeedInsights />
+        <Analytics /> {/* Vercel Analytics ကို ထည့်သွင်းထားပါတယ် */}
         {/* Step 1: Background Image ကို အောက်ဆုံး Layer အဖြစ် (fixed, -z-50) ထားပါမည် */}
         <div className="fixed inset-0 -z-50">
           <Image
@@ -83,7 +85,6 @@ export default function RootLayout({
             priority
           />
         </div>
-
         {/* Step 2: Content များကို အပေါ်ဆုံး Layer (z-0) တွင် ထားပါမည် */}
         <div className="relative z-0 min-h-screen">{children}</div>
       </body>
