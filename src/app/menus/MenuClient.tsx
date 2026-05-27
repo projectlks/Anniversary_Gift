@@ -9,15 +9,14 @@ import {
   CalendarDaysIcon,
   ClockIcon,
   CloudArrowUpIcon,
-  EnvelopeOpenIcon, // 🌟 3D စာအိတ်အတွက်
-  PencilSquareIcon, // 🌟 Sticky Note Board အတွက်
-  HeartIcon,
-  MusicalNoteIcon,
+  EnvelopeOpenIcon,
+  PencilSquareIcon,
   PhotoIcon,
   PuzzlePieceIcon,
   Squares2X2Icon,
   SparklesIcon,
   GiftIcon,
+  MusicalNoteIcon,
 } from "@heroicons/react/24/outline";
 
 type MenuCard = {
@@ -28,7 +27,6 @@ type MenuCard = {
   delay: string;
 };
 
-// 🌟 Note (၂) မျိုးလုံး ပါဝင်အောင် အသစ်ပြန်စီထားသော စာရင်း
 const menuCards: MenuCard[] = [
   {
     title: "Anniversary Special",
@@ -40,7 +38,7 @@ const menuCards: MenuCard[] = [
   {
     title: "Secret Love Letter",
     description: "A sealed envelope holding my deepest feelings for you.",
-    href: "/letter", // 🌟 3D စာအိတ် (Love Note) ရဲ့ လမ်းကြောင်းကို ဒီမှာထည့်ပါ
+    href: "/letter",
     icon: (
       <EnvelopeOpenIcon className="h-12 w-12 text-rose-500" strokeWidth={1.5} />
     ),
@@ -50,7 +48,7 @@ const menuCards: MenuCard[] = [
     title: "Sticky Love Board",
     description:
       "Our real-time interactive board to leave sticky notes and sweet emojis.",
-    href: "/board", // 🌟 မနေ့ကရေးခဲ့တဲ့ FigJam Board ရဲ့ လမ်းကြောင်းကို ဒီမှာထည့်ပါ
+    href: "/board",
     icon: (
       <PencilSquareIcon className="h-12 w-12 text-blue-500" strokeWidth={1.5} />
     ),
@@ -123,15 +121,14 @@ const menuCards: MenuCard[] = [
     icon: (
       <CloudArrowUpIcon className="h-12 w-12 text-cyan-600" strokeWidth={1.5} />
     ),
-    delay: "1.0s", // 🌟 Delay များကို 1.0s အထိ သေချာ ပြန်စီထားပါသည်
+    delay: "1.0s",
   },
 ];
 
-export default function Menus() {
-  const router = useRouter();
+// 🌟 Exported Component 1: HeaderControls
+export function HeaderControls() {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [currentDate, setCurrentDate] = useState("");
-  const [loadingRoute, setLoadingRoute] = useState<string | null>(null);
 
   useEffect(() => {
     const date = new Date().toLocaleDateString("en-US", {
@@ -152,6 +149,57 @@ export default function Menus() {
       setIsLoggingOut(false);
     }
   };
+
+  return (
+    <div className="flex items-center gap-4 md:gap-6">
+      <div className="hidden items-center gap-2 rounded-lg border border-gray-100 bg-gray-50 px-3 py-1.5 sm:flex">
+        <ClockIcon className="h-4 w-4 text-pink-500" />
+        <span className="text-xs font-semibold uppercase tracking-wide text-gray-600">
+          {currentDate || "Loading..."}
+        </span>
+      </div>
+
+      <button
+        type="button"
+        onClick={handleLogout}
+        disabled={isLoggingOut}
+        className="flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-semibold text-red-600 transition-all hover:bg-red-600 hover:text-white disabled:cursor-not-allowed disabled:opacity-50">
+        {isLoggingOut ? (
+          <svg
+            className="h-4 w-4 animate-spin"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            aria-hidden="true">
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            />
+          </svg>
+        ) : (
+          <ArrowRightOnRectangleIcon className="h-4 w-4" strokeWidth={2.5} />
+        )}
+        <span className="hidden sm:inline">
+          {isLoggingOut ? "Logging out" : "Log out"}
+        </span>
+      </button>
+    </div>
+  );
+}
+
+// 🌟 Exported Component 2: Grid
+export function Grid() {
+  const router = useRouter();
+  const [loadingRoute, setLoadingRoute] = useState<string | null>(null);
 
   const handleNavigation = (href: string) => {
     setLoadingRoute(href);
@@ -182,101 +230,26 @@ export default function Menus() {
         />
       )}
 
-      <div className="min-h-screen bg-[#F8FAFC] font-sans text-gray-500">
-        <header className="sticky top-0 z-40 flex w-full border-b border-gray-200 bg-white/80 backdrop-blur-md">
-          <div className="container mx-auto flex w-full grow items-center justify-between px-6 py-4 md:px-10">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-pink-100 bg-pink-50 text-pink-600">
-                <HeartIcon className="h-5 w-5" strokeWidth={2.5} />
-              </div>
-              <h1 className="text-xl font-bold tracking-tight text-gray-900">
-                Our Space
-              </h1>
-            </div>
-
-            <div className="flex items-center gap-4 md:gap-6">
-              <div className="hidden items-center gap-2 rounded-lg border border-gray-100 bg-gray-50 px-3 py-1.5 sm:flex">
-                <ClockIcon className="h-4 w-4 text-pink-500" />
-                <span className="text-xs font-semibold uppercase tracking-wide text-gray-600">
-                  {currentDate || "Loading..."}
-                </span>
-              </div>
-
-              <button
-                type="button"
-                onClick={handleLogout}
-                disabled={isLoggingOut || !!loadingRoute}
-                className="flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-semibold text-red-600 transition-all hover:bg-red-600 hover:text-white disabled:cursor-not-allowed disabled:opacity-50">
-                {isLoggingOut ? (
-                  <svg
-                    className="h-4 w-4 animate-spin"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true">
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    />
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    />
-                  </svg>
-                ) : (
-                  <ArrowRightOnRectangleIcon
-                    className="h-4 w-4"
-                    strokeWidth={2.5}
-                  />
-                )}
-                <span className="hidden sm:inline">
-                  {isLoggingOut ? "Logging out" : "Log out"}
-                </span>
-              </button>
-            </div>
-          </div>
-        </header>
-
-        <main className="container mx-auto space-y-10 p-4 pt-10 md:p-10">
-          <div className="frontend-menu-fade-in-up max-w-2xl">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-pink-600">
-              Private
-            </p>
-            <h2 className="mb-4 text-3xl font-bold tracking-tight text-gray-900 md:text-4xl lg:text-[40px]">
-              Menu of Our Love
-            </h2>
-            <p className="text-base leading-relaxed text-gray-500 md:text-lg">
-              Explore our special memories, leave a sticky note, or open the
-              secret love letter.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {menuCards.map((card) => (
-              <MenuDashboardCard
-                key={card.href}
-                title={card.title}
-                description={card.description}
-                icon={card.icon}
-                delay={card.delay}
-                href={card.href}
-                isLoading={loadingRoute === card.href}
-                isGlobalLoading={!!loadingRoute}
-                onClick={() => handleNavigation(card.href)}
-              />
-            ))}
-          </div>
-        </main>
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {menuCards.map((card) => (
+          <MenuDashboardCard
+            key={card.href}
+            title={card.title}
+            description={card.description}
+            icon={card.icon}
+            delay={card.delay}
+            href={card.href}
+            isLoading={loadingRoute === card.href}
+            isGlobalLoading={!!loadingRoute}
+            onClick={() => handleNavigation(card.href)}
+          />
+        ))}
       </div>
     </>
   );
 }
 
+// 🌟 Internal Component (No export needed)
 function MenuDashboardCard({
   title,
   description,
