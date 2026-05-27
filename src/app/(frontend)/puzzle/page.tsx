@@ -1,26 +1,28 @@
+// app/memory/page.tsx (သို့မဟုတ် သင်အသုံးပြုလိုသော နေရာ)
+import { getAllImages } from "@/libs/action";
+import { resolveCoupleScope } from "@/libs/authz";
+import MemoryGameClient from "./MemoryGameClient";
 
-import type React from "react"
-import PuzzleForm from "./PuzzleForm"
-import { getAllPuzzleImages } from "../../backend/puzzle/action"
-import { PuzzleImages } from "@prisma/client"
-export const dynamic = "force-dynamic";
-const gridSize = 4
-const totalPieces = gridSize * gridSize
+export default async function MemoryGamePage() {
+  // DB မှ Couple Data ကိုယူမည်
+  const { couple } = await resolveCoupleScope();
 
-export default async function ImagePuzzle() {
+  // DB မှ ပုံများကိုယူမည် (URL များကိုသာ သီးသန့်ထုတ်ယူမည်)
+  const dbImages = await getAllImages(couple.id);
+  const images = dbImages.map((image) => image.imgUrl);
 
-    const images: PuzzleImages[] = await getAllPuzzleImages();
+  return (
+    <main className="relative flex min-h-[100dvh] w-full flex-col items-center justify-center overflow-hidden bg-[#FAFAF9] text-stone-800">
+      {/* Ambient Background */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <div className="absolute -left-[10%] top-[-10%] h-[50vh] w-[50vh] rounded-full bg-rose-200/40 blur-[100px]" />
+        <div className="absolute right-[-10%] bottom-[-10%] h-[60vh] w-[60vh] rounded-full bg-emerald-100/40 blur-[120px]" />
+      </div>
 
-
-    return (
-        <main className="min-h-screen bg-gradient-to-br from-purple-100 to-pink-100 text-gray-800 p-4 flex flex-col items-center space-y-8">
-            <h1 className="text-4xl font-extrabold text-gray-800 tracking-tight text-center mt-8">
-                Image Puzzle (Drag & Drop)
-            </h1>
-
-
-
-            <PuzzleForm totalPieces={totalPieces} gridSize={gridSize} PuzzleImgs={images} />
-        </main>
-    )
+      <div className="relative z-10 w-full">
+        {/* 🌟 DB ကရလာတဲ့ ပုံတွေကို Prop အနေနဲ့ ထည့်ပေးလိုက်ပါပြီ */}
+        <MemoryGameClient dbImages={images} />
+      </div>
+    </main>
+  );
 }

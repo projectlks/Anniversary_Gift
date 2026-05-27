@@ -133,23 +133,21 @@
 
 
 // app/page.tsx (or simply page.tsx)
+// page.tsx
 import { Cormorant_Garamond, Albert_Sans, Great_Vibes } from "next/font/google";
-import LandingClient from "./LandingClient";
+import LandingClient from "./LandingClient"; 
 
-// Premium Serif Font (ခေါင်းစဉ်များအတွက်) - Server မှာပဲ Load လုပ်မည်
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
 });
 
-// Clean Sans Font (စာသားများအတွက်)
 const albertSans = Albert_Sans({
   subsets: ["latin"],
   weight: ["300", "400", "500"],
 });
 
-// Elegant Signature Font (အလှဆင် စာသားများအတွက်)
 const greatVibes = Great_Vibes({
   subsets: ["latin"],
   weight: ["400"],
@@ -160,13 +158,13 @@ export default function LandingPage() {
     <section
       className={`relative flex min-h-[100dvh] w-full flex-col items-center justify-center overflow-hidden bg-[#FAFAF9] px-4 sm:px-6 ${albertSans.className}`}>
       
-      {/* === ၁။ Ambient Glowing Background (Server Rendered) === */}
+      {/* Ambient Glowing Background (Server Rendered - Very Fast) */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <div className="absolute -left-[10%] top-[-10%] h-[50vh] w-[50vh] rounded-full bg-rose-200/40 blur-[100px]" />
         <div className="absolute right-[-10%] bottom-[-10%] h-[60vh] w-[60vh] rounded-full bg-orange-100/40 blur-[120px]" />
       </div>
 
-      {/* === ၂။ Client Side Animation & Interactivity === */}
+      {/* Client Component ကို ခေါ်သုံးခြင်း */}
       <LandingClient 
         cormorantClassName={cormorant.className} 
         greatVibesClassName={greatVibes.className} 
