@@ -1,17 +1,8 @@
 "use server";
 import { prisma } from "@/libs/prisma"; // 🌟 အစ်ကို့ လမ်းကြောင်းအတိုင်း ပြင်ပါ
+import { pusher } from "@/libs/pusher";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import Pusher from "pusher";
-
-// 🌟 Pusher ချိတ်ဆက်ခြင်း
-const pusher = new Pusher({
-    appId: process.env.PUSHER_APP_ID!,
-    key: process.env.NEXT_PUBLIC_PUSHER_KEY!,
-    secret: process.env.PUSHER_SECRET!,
-    cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
-    useTLS: true,
-});
 
 // ---------------------------------------------------------
 // 🌟 Zod Schemas

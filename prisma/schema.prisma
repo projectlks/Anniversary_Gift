@@ -273,6 +273,7 @@ model Couple {
   surpriseVideoUrl String?
   secretNote       String? // ဗီဒီယိုပြီးမှ ပေါ်မည့်စာ
   surpriseMessage  String? // 🌟 စာရိုက်ပြမည့်စာ (အသစ်တိုးရန်)
+  pixelArt         PixelArt?
 }
 
 // 🌟 [New] Figma-style Short Notes များ သိမ်းဆည်းရန်
@@ -289,6 +290,15 @@ model ShortNote {
   couple Couple @relation(fields: [coupleId], references: [id], onDelete: Cascade)
 
   @@index([coupleId])
+}
+
+model PixelArt {
+  id        String   @id @default(cuid())
+  coupleId  String   @unique
+  pixels    String   @db.Text // အရောင် 256 ကွက်စာကို JSON String အနေနဲ့ သိမ်းပါမည်
+  updatedAt DateTime @updatedAt
+
+  couple Couple @relation(fields: [coupleId], references: [id], onDelete: Cascade)
 }
 
 model CoupleMember {

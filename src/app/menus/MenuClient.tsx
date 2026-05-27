@@ -17,6 +17,7 @@ import {
   SparklesIcon,
   GiftIcon,
   MusicalNoteIcon,
+  PaintBrushIcon,
 } from "@heroicons/react/24/outline";
 
 type MenuCard = {
@@ -115,16 +116,24 @@ const menuCards: MenuCard[] = [
     delay: "0.9s",
   },
   {
+    title: "Pixel Art",
+    description: "Draw our memories together on a real-time shared canvas.",
+    href: "/pixel-art",
+    icon: (
+      <PaintBrushIcon className="h-12 w-12 text-violet-500" strokeWidth={1.5} />
+    ),
+    delay: "1.0s",
+  },
+  {
     title: "Upload Memories",
     description: "Add new photos to your shared space securely.",
     href: "/upload-memory",
     icon: (
       <CloudArrowUpIcon className="h-12 w-12 text-cyan-600" strokeWidth={1.5} />
     ),
-    delay: "1.0s",
+    delay: "1.1s",
   },
 ];
-
 // 🌟 Exported Component 1: HeaderControls
 export function HeaderControls() {
   const [isLoggingOut, setIsLoggingOut] = useState(false);

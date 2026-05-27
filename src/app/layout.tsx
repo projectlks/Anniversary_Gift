@@ -19,10 +19,10 @@ export const metadata: Metadata = {
   title: "Our Space",
   description: "A private space for our beautiful memories",
   manifest: "/manifest.json",
-  icons: {
-    icon: "/192.png",
-    apple: "/192.png",
-  },
+  // icons: {
+  //   icon: "/192.png",
+  //   apple: "/192.png",
+  // },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
