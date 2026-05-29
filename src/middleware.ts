@@ -64,7 +64,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 
-const PUBLIC_PATHS = new Set(["/", "/auth/signin", "/auth/verify"]);
+const PUBLIC_PATHS = new Set([
+  "/",
+  "/auth/signin",
+  "/auth/verify",
+  "/privacy",
+  "/sitemap.xml",
+  "/terms-of-service",
+]);
 
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
