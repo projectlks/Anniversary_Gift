@@ -371,7 +371,7 @@ export default function MenusPage() {
         <div className="container mx-auto flex w-full grow items-center justify-between px-6 py-4 md:px-10">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-pink-100 bg-pink-50 text-pink-600">
-              <Image src="/192.png" alt="Heart Icon" width={20} height={20} />
+              <Image src="/192.png" alt="Heart Icon" width={40} height={40} />
             </div>
             <h1 className="text-xl font-bold tracking-tight text-gray-900">
               Our Space
